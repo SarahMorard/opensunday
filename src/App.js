@@ -9,6 +9,7 @@ import LocationDetails from "./pages/LocationDetails";
 
 function App() {
   //Test push Mathieu
+  //Test push Sarah
   let [locations, setLocations] = useState([]);
 
   let {
