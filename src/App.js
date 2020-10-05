@@ -8,6 +8,7 @@ import { BrowserRouter, Link, Switch, Route } from "react-router-dom";
 import LocationDetails from "./pages/LocationDetails";
 
 function App() {
+  //test push Nico
   //Test push Mathieu
   //Test push Sarah
   let [locations, setLocations] = useState([]);
