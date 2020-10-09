@@ -1,0 +1,63 @@
+/* Main div for the card that display all the informations about the establishment (on right)*/
+.infosCard {
+    width: 20%;
+    height: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    position: absolute;
+    right: 0px;
+    background-color: #282c34;
+    color: white;
+    border-radius: 25px 25px;
+}
+
+/* Effect when the mouse goes over the card*/
+.infosCard:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Padding of the card's container */
+.infosContainer {
+    padding: 2px 10px;
+}
+
+/* Position and style the close button (top left corner) */
+.infosCard .infosClosebtn {
+    position: absolute;
+    top: 0;
+    left: 0%;
+    font-size: 36px;
+    margin-left: 50px;
+    color: white;
+    text-decoration: none;
+}
+
+/* Img for the establishment */
+.image {
+    width: 100%;
+    border-radius: 25px;
+}
+
+/* Style for the button favorits */
+.btnFav {
+    border-radius: 5px;
+    background-color: #282c34;
+    color: white;
+    font-weight: bold;
+    border: 2px solid cornflowerblue;
+    transition-duration: 0.4s;
+    padding: 2%;
+
+}
+
+/* Style when the mouse goes over the button */
+.btnFav:hover {
+    background-color: cornflowerblue;
+    color: white;
+    cursor: pointer;
+}
+
+.stars {
+   margin: 10%;
+
+}
