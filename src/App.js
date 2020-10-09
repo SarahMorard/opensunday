@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import "./App.css";
 import NavBars from "./components/Header/NavigationComponents";
 import MyMap from "./pages/MapPage";
+import InfosEstablishment from "./components/Infos/InfosEstablishmentComponents";
 
 function App() {
-
-
-
     return (
-        <div className="App">
-            <NavBars/>
-            <MyMap />
+        <div class="App">
+            <NavBars />
+
+            <InfosEstablishment/>
         </div>
     );
 }

@@ -1,5 +1,9 @@
 import React from "react";
 import {Map, Marker, Popup, TileLayer} from "react-leaflet";
+import "./MapStyle.css"
+import NavBars from "../components/Header/NavigationComponents";
+import InfosEstablishment from "../components/Infos/InfosEstablishmentComponents";
+
 
 class MyMap extends React.Component {
     constructor() {
@@ -13,26 +17,27 @@ class MyMap extends React.Component {
     }
 
 
-    diplayInfos = () => {
+    displayInfos = () => {
         //Render the information about the establishment
+        return <InfosEstablishment />;
     }
+
 
     render() {
         return (
-            <Map center={[this.coord.lat, this.coord.lng]} zoom={this.coord.zoom}>
-                <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>
-                    contributors'
-                />
-                <Marker position={[this.coord.lat, this.coord.lng]} onClick={this.diplayInfos}>
-                    <Popup>
-                        <div>
-                            <h2>TechnoPole!</h2>
-                        </div>
-                    </Popup>
-                </Marker>
-            </Map>
+            <div class="Map">
+                <Map center={[this.coord.lat, this.coord.lng]} zoom={this.coord.zoom}>
+
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>
+                        contributors'
+                    />
+                    <Marker position={[this.coord.lat, this.coord.lng]} onClick={this.displayInfos}>
+
+                    </Marker>
+                </Map>
+            </div>
         );
     }
 }

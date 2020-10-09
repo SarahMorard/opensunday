@@ -1,18 +1,59 @@
 //============================Class Info establishement + options=======================================================
 import React from "react";
+import "./InfoEstablishmentStyle.css";
+import BeautyStars from 'beauty-stars';
 
-class InfoEstablishment extends React.Component {
+class InfosEstablishment extends React.Component {
     constructor() {
         super();
+        this.infosRef = React.createRef();
     }
+
+    state = { value: 0 };
+
+    //Function to add the establishment to the favorit list
+    addToFavorits = () =>{
+
+    }
+
+
+    //Close the information card about the establishment
+    //Set the width of the bar to 0 to close it
+    closeInfos = () => {
+        return this.infosRef.current.style.width = 0;
+    }
+
+    //Open the information card about the establishment
+    //Set the width of the bar to 250px to open it
+    openInfos = () => {
+        return this.infosRef.current.style.width = '20%';
+    }
+
 
     render() {
         return(
-            <div>
+            <div class="infosCard" ref={this.infosRef}>
+                <a href="javascript:void(0)" className="infosClosebtn" onClick={this.closeInfos}>&times;</a>
+                <img class="image" src="https://www.technopole.ch/data/images/galeries/ciel/IMG_1341.JPG"/>
+                <div class="infosContainer">
+                    <h4><b>Technopole</b></h4>
+                    <p>Rue de Technopôle 1, 3960 Sierre</p>
+                    <h3>Open on: </h3>
+                    <h4>...</h4>
+                    <button class="btnFav">Add to favorits</button>
+
+                    <div className="stars">
+                        <BeautyStars
+                            value={this.state.value}
+                            onChange={value => this.setState({value})}
+                            inactiveColor="white"
+                        />
+                </div>
+
+                </div>
 
             </div>
         );
     }
 }
-export default InfoEstablishment;
-//======================================================================================================================
+export default InfosEstablishment;
