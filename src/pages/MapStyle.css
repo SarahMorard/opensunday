@@ -9,5 +9,6 @@
     height: 100%;
     width: 100%;
     align-content: center;
+    z-index: 2;
 }
 

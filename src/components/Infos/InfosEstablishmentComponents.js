@@ -6,10 +6,13 @@ import BeautyStars from 'beauty-stars';
 class InfosEstablishment extends React.Component {
     constructor() {
         super();
+
+        //Ref for the infoEstablishment div
         this.infosRef = React.createRef();
     }
 
-    state = { value: 0 };
+    //State of the stars (in hook for better code?)
+    starState = { value: 0 };
 
     //Function to add the establishment to the favorit list
     addToFavorits = () =>{
@@ -32,8 +35,8 @@ class InfosEstablishment extends React.Component {
 
     render() {
         return(
-            <div class="infosCard" ref={this.infosRef}>
-                <a href="javascript:void(0)" className="infosClosebtn" onClick={this.closeInfos}>&times;</a>
+            <div class="infoEstablishment" ref={this.infosRef}>
+                <a href="javascript:void(0)" class="infosClosebtn" onClick={this.closeInfos}>&times;</a>
                 <img class="image" src="https://www.technopole.ch/data/images/galeries/ciel/IMG_1341.JPG"/>
                 <div class="infosContainer">
                     <h4><b>Technopole</b></h4>
@@ -44,7 +47,7 @@ class InfosEstablishment extends React.Component {
 
                     <div className="stars">
                         <BeautyStars
-                            value={this.state.value}
+                            value={this.starState.value}
                             onChange={value => this.setState({value})}
                             inactiveColor="white"
                         />

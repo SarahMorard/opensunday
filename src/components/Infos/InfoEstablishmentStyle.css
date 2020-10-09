@@ -1,5 +1,6 @@
-/* Main div for the card that display all the informations about the establishment (on right)*/
-.infosCard {
+/* Main div for the card that display all the information about the establishment (on right)*/
+/* z-index + position to put it on top of the map */
+.infoEstablishment {
     width: 20%;
     height: 100%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -9,10 +10,12 @@
     background-color: #282c34;
     color: white;
     border-radius: 25px 25px;
+    z-index: 3;
+
 }
 
 /* Effect when the mouse goes over the card*/
-.infosCard:hover {
+.infoEstablishment:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
@@ -22,7 +25,7 @@
 }
 
 /* Position and style the close button (top left corner) */
-.infosCard .infosClosebtn {
+.infoEstablishment .infosClosebtn {
     position: absolute;
     top: 0;
     left: 0%;
@@ -57,6 +60,7 @@
     cursor: pointer;
 }
 
+/* Stars ratting */
 .stars {
    margin: 10%;
 

@@ -1,27 +1,6 @@
 import React, {useState} from "react";
 import "./NavStyle.css";
-import {Calendar} from "react-calendar";
-
-// Set the state for calendar
-function MyCalendar ()  {
-    // Set state of the calendar
-    const [date, setDate] = useState(new Date());
-
-    //Handling the state when the date change
-    const onChange = date => {
-        setDate(date);
-    };
-
-    return (
-        <div>
-            <Calendar
-                onChange={onChange}
-                value={date}
-            />
-        </div>
-    );
-}
-
+import MyCalendar from "./CalendarComponents";
 
 class NavBars extends React.Component {
     constructor(props) {
@@ -42,21 +21,28 @@ class NavBars extends React.Component {
         return this.navRef.current.style.width = '250px';
     }
 
+    //Function to call the calendar and displays it
+    callCalendar = () => {
+        return <div class="test">Hello</div>
+    }
+
     render() {
         return (
             <div>
-                <div className="topNav">
-                    <a className="active" href="#home">Home</a>
-                    <span class="settings" onClick={this.openNav}>ToolBox</span>
+                <div class="topNavBar">
+                    <a className="login" href="#home">Login</a>
+                    <a class="home" href="#home">Home</a>
+                    <span class="btnToolbox" onClick={this.openNav}>ToolBox</span>
                 </div>
 
-                <div id="sideNav" className="sideNav" ref={this.navRef}>
+                <div id="toolbox" className="toolbox" ref={this.navRef}>
                     <a href="javascript:void(0)" className="btnClose" onClick={this.closeNav}>&times;</a>
-                    <input class="search" type="text" placeholder="Search.."/>
+                    <input class="searchBar" type="text" placeholder="Search.."/>
                     <br/>
                     <button class="btnSearch">Search</button>
-                    <a href="#" onClick={MyCalendar}>Calendar</a>
+                    <a >Calendar</a>
                     <a href="#">Contact</a>
+
                 </div>
             </div>
 

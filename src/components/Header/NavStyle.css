@@ -1,5 +1,5 @@
 /* Style of the settings */
-.settings {
+.btnToolbox {
     display: block;
     color: white;
     text-align: left;
@@ -14,7 +14,7 @@
 }
 
 /* Style of the setting when the mouse goes over it */
-.settings:hover {
+.btnToolbox:hover {
     cursor: pointer;
 }
 
@@ -39,13 +39,13 @@ li a {
 }
 
 /* Black background color to the top navigation bar */
-.topNav {
+.topNavBar {
     overflow: hidden;
     background-color: #282c34;
 }
 
 
-.topNav a {
+.topNavBar a {
     float: right;
     display: block;
     color: white;
@@ -56,23 +56,23 @@ li a {
 }
 
 /* Change the color of links on hover */
-.topNav a:hover {
+.topNavBar a:hover {
     background-color: black;
     color: white;
 }
 
 /* Style the "active" element to highlight the current page */
-.topNav a.active {
+.topNavBar a.active {
     background-color: black;
     color: white;
 }
 
 /* Side navigation menu */
-.sideNav {
+.toolbox {
     height: 100%; /* 100% Full-height */
     width: 0; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
+    z-index: 3; /* Stay on top */
     top: 0; /* Stay at the top */
     left: 0;
     background-color: #111; /* Black*/
@@ -82,7 +82,7 @@ li a {
 }
 
 /* Header menu links */
-.sideNav a {
+.toolbox a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -93,13 +93,13 @@ li a {
 }
 
 /* When you mouse over the navigation links, change their color */
-.sideNav a:hover {
+.toolbox a:hover {
     color: #f1f1f1;
 
 }
 
 /* Position and style the close button (top right corner) */
-.sideNav .btnClose {
+.toolbox .btnClose {
     position: absolute;
     top: 0;
     right: 25px;
@@ -117,11 +117,10 @@ li a {
 
 
 /* Search bar */
-.search {
+.searchBar {
     width: 80%;
     height: 5%;
 }
-
 
 /* Search button */
 .btnSearch {
@@ -134,6 +133,7 @@ li a {
     margin: 2%;
 }
 
+/* Style when the mouse goes over the search button */
 .btnSearch:hover {
     background-color: cornflowerblue;
     color: white;
