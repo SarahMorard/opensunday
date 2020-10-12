@@ -51,6 +51,7 @@ class InfosEstablishment extends React.Component {
                             value={this.starState.value}
                             onChange={value => this.setState({value})}
                             inactiveColor="white"
+                            // Gérer les étoiles en responsive!!!
                         />
                 </div>
 

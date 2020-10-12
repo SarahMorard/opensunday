@@ -1,6 +1,7 @@
 import "./NavStyle.css";
 import React from "react";
 import MyCalendar from "./CalendarComponents";
+import MyMap from "../../pages/MapPage";
 
 class NavBars extends React.Component {
     constructor(props) {
@@ -23,7 +24,9 @@ class NavBars extends React.Component {
 
     //Function to call the calendar and displays it
     callCalendar = () => {
-        return <div class="test">Hello</div>
+        return (
+            <div></div>
+        );
     }
 
     render() {
@@ -40,7 +43,8 @@ class NavBars extends React.Component {
                     <input class="searchBar" type="text" placeholder="Search.."/>
                     <br/>
                     <button class="btnSearch">Search</button>
-                    <a >Calendar</a>
+                    <a onClick={this.callCalendar}>Calendar</a>
+                    <MyCalendar/>
                     <a href="#">Contact</a>
 
                 </div>
