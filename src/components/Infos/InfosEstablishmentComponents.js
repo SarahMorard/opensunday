@@ -1,5 +1,5 @@
 //============================Class Info establishement + options=======================================================
-import React from "react";
+import React, {useContext} from "react";
 import "./InfoEstablishmentStyle.css";
 import BeautyStars from 'beauty-stars';
 
@@ -11,11 +11,13 @@ class InfosEstablishment extends React.Component {
         this.infosRef = React.createRef();
     }
 
+
     //State of the stars (in hook for better code?)
     starState = { value: 0 };
 
+
     //Function to add the establishment to the favorit list
-    addToFavorits = () =>{
+    addToFavorits = () => {
 
     }
 
@@ -26,8 +28,6 @@ class InfosEstablishment extends React.Component {
         return this.infosRef.current.style.width = 0;
     }
 
-    //Open the information card about the establishment
-    //Set the width of the bar to 250px to open it
     openInfos = () => {
         return this.infosRef.current.style.width = '20%';
     }
@@ -36,6 +36,7 @@ class InfosEstablishment extends React.Component {
     render() {
         return(
             <div class="infoEstablishment" ref={this.infosRef}>
+
                 <a href="javascript:void(0)" class="infosClosebtn" onClick={this.closeInfos}>&times;</a>
                 <img class="image" src="https://www.technopole.ch/data/images/galeries/ciel/IMG_1341.JPG"/>
                 <div class="infosContainer">
@@ -54,9 +55,10 @@ class InfosEstablishment extends React.Component {
                 </div>
 
                 </div>
-
             </div>
+
         );
     }
 }
+
 export default InfosEstablishment;

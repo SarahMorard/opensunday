@@ -8,7 +8,7 @@ function App() {
     return (
         <div class="App">
             <NavBars />
-            <InfosEstablishment/>
+            <InfosEstablishment />
             <MyMap/>
 
         </div>

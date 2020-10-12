@@ -1,5 +1,5 @@
-import React, {useState} from "react";
 import "./NavStyle.css";
+import React from "react";
 import MyCalendar from "./CalendarComponents";
 
 class NavBars extends React.Component {
@@ -18,7 +18,7 @@ class NavBars extends React.Component {
     //Open the navigation bar
     //Set the width of the bar to 250px to open it
     openNav = () => {
-        return this.navRef.current.style.width = '250px';
+        return this.navRef.current.style.width = '20%';
     }
 
     //Function to call the calendar and displays it
@@ -30,8 +30,8 @@ class NavBars extends React.Component {
         return (
             <div>
                 <div class="topNavBar">
-                    <a className="login" href="#home">Login</a>
-                    <a class="home" href="#home">Home</a>
+                    <a className="login" href="#login">Login</a>
+                    <a class="home" href="#">Home</a>
                     <span class="btnToolbox" onClick={this.openNav}>ToolBox</span>
                 </div>
 
@@ -49,4 +49,5 @@ class NavBars extends React.Component {
         );
     }
 }
+
 export default NavBars;
