@@ -17,7 +17,7 @@ class NavBars extends React.Component {
     }
 
     //Open the navigation bar
-    //Set the width of the bar to 250px to open it
+    //Set the width of the bar to 20% to open it
     openNav = () => {
         return this.navRef.current.style.width = '20%';
     }

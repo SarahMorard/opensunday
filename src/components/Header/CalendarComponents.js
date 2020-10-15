@@ -9,8 +9,8 @@ class MyCalendar extends React.Component  {
         super(props);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.state = {
-            selectedDay: undefined, //State for the selected day
-            local: 'en', //state for the language of the calendar
+            //State for the selected day
+            selectedDay: undefined,
         };
     }
 
@@ -29,18 +29,17 @@ class MyCalendar extends React.Component  {
     render() {
         return (
             <div className="calendar">
-
                 <DayPicker
                     onDayClick={this.handleDayClick}
                     selectedDays={this.state.selectedDay}
-                    //All days are disabled except sunday and holiday
-                    disabledDays={{ daysOfWeek: [1,2,3,4,5,6] }}
+
                 />
                 {this.state.selectedDay ? (
                     <p>You clicked {this.state.selectedDay.toLocaleDateString()}</p>
                 ) : (
                     <p>Please select a day.</p>
                 )}
+
             </div>
         );
     }
