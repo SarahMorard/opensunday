@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./NavStyle.css";
-import { useAuth0 } from "@auth0/auth0-react";
+import {useAuth0} from "@auth0/auth0-react";
 import request from "../../utils/request";
 import endpoints from "../../endpoints";
 import Loading from "../Loading";
-import React from "react";
 import MyCalendar from "./CalendarComponents";
-import MyMap from "../../pages/MapPage";
 
 function NavBars() {
     // Reference for the navigation bar "sideNav"
@@ -47,12 +45,6 @@ function NavBars() {
         return <Loading/>;
     }
 
-    //Function to call the calendar and displays it
-    let callCalendar = () => {
-        return (
-            <div></div>
-        );
-
     return (
         <div>
             <div className="topNavBar">
@@ -77,17 +69,19 @@ function NavBars() {
 
             </div>
 
-            <div id="toolbox" className="toolbox" style={{width: nav? "20%" : 0}}>
+            <div id="toolbox" className="toolbox" style={{width: nav ? "20%" : 0}}>
                 <a href="javascript:void(0)" className="btnClose" onClick={toogleRef}>&times;</a>
                 <input class="searchBar" type="text" placeholder="Search.."/>
                 <br/>
                 <button class="btnSearch">Search</button>
-                <a onClick={callCalendar}>Calendar</a>
+                <a>Calendar</a>
+                <MyCalendar/>
                 <a href="#">Contact</a>
             </div>
         </div>
 
     );
+
 }
 
 export default NavBars;

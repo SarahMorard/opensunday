@@ -35,7 +35,7 @@ class MyCalendar extends React.Component  {
 
                 />
                 {this.state.selectedDay ? (
-                    <p>You clicked {this.state.selectedDay.toLocaleDateString()}</p>
+                    <p>You selected {this.state.selectedDay.toLocaleDateString()}</p>
                 ) : (
                     <p>Please select a day.</p>
                 )}
