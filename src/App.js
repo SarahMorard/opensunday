@@ -5,6 +5,10 @@ import MyMap from "./pages/MapPage";
 import InfosEstablishment from "./components/Infos/InfosEstablishmentComponents";
 
 function App() {
+    const [display, setDisplay] = useState(0);
+
+
+
     return (
         <div class="App">
             <NavBars />

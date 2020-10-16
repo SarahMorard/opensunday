@@ -4,6 +4,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import request from "../../utils/request";
 import endpoints from "../../endpoints";
 import Loading from "../Loading";
+import React from "react";
+import MyCalendar from "./CalendarComponents";
+import MyMap from "../../pages/MapPage";
 
 function NavBars() {
     // Reference for the navigation bar "sideNav"
@@ -44,6 +47,12 @@ function NavBars() {
         return <Loading/>;
     }
 
+    //Function to call the calendar and displays it
+    let callCalendar = () => {
+        return (
+            <div></div>
+        );
+
     return (
         <div>
             <div className="topNavBar">
@@ -73,7 +82,7 @@ function NavBars() {
                 <input class="searchBar" type="text" placeholder="Search.."/>
                 <br/>
                 <button class="btnSearch">Search</button>
-                <a>Calendar</a>
+                <a onClick={callCalendar}>Calendar</a>
                 <a href="#">Contact</a>
             </div>
         </div>
