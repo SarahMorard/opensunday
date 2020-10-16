@@ -10,7 +10,6 @@ function App() {
             <NavBars />
             <InfosEstablishment />
             <MyMap/>
-
         </div>
     );
 }

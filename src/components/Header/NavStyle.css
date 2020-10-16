@@ -1,21 +1,6 @@
 /* Style of the settings */
 .btnToolbox {
-    display: block;
-    color: white;
-    text-align: left;
-    padding: 14px 16px;
-    text-decoration: none;
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
     position: absolute;
-}
-
-/* Style of the setting when the mouse goes over it */
-.btnToolbox:hover {
-    cursor: pointer;
 }
 
 ul {
@@ -49,7 +34,6 @@ li a {
     float: right;
     display: block;
     color: white;
-    text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
@@ -59,6 +43,7 @@ li a {
 .topNavBar a:hover {
     background-color: black;
     color: white;
+    cursor: pointer;
 }
 
 /* Style the "active" element to highlight the current page */
@@ -68,21 +53,28 @@ li a {
 }
 
 /* Side navigation menu */
-.toolbox {
+.toolbox, .login {
     height: 100%; /* 100% Full-height */
     width: 0; /* 0 width - change this with JavaScript */
+    z-index: 4; /* Stay on top */
     position: fixed; /* Stay in place */
-    z-index: 3; /* Stay on top */
     top: 0; /* Stay at the top */
-    left: 0;
     background-color: #111; /* Black*/
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
+.toolbox {
+    left: 0;
+}
+
+.login {
+    right: 0;
+}
+
 /* Header menu links */
-.toolbox a {
+.toolbox a, .login a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -98,16 +90,17 @@ li a {
 
 }
 
-/* Position and style the close button (top right corner) */
-.toolbox .btnClose {
+/* Position and style the close button */
+.login .btnClose, .toolbox .btnClose {
     position: absolute;
     top: 0;
-    right: 25px;
     font-size: 36px;
-    margin-left: 50px;
 }
 
-
+/* Position and style the close button (top right corner) */
+.toolbox .btnClose {
+    right: 25px;
+}
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
@@ -139,4 +132,20 @@ li a {
     color: white;
 }
 
+.label, .login p {
+    color: #ffffff;
+    display: block;
+}
 
+.label {
+    padding-left: 20%;
+    text-align: left;
+}
+
+.login p {
+    text-align: center;
+}
+
+.field {
+    width: 60%;
+}

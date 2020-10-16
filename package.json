@@ -9,6 +9,8 @@
     "@testing-library/user-event": "^7.1.2",
     "beauty-stars": "^1.1.0",
     "date-fns": "^2.16.1",
+    "formic": "^0.0.10",
+    "formik": "^2.1.7",
     "history": "^5.0.0",
     "leaflet": "^1.7.1",
     "react": "^16.13.1",
@@ -19,7 +21,8 @@
     "react-nice-dates": "^3.0.7",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "reactjs-popup": "^2.0.4"
+    "reactjs-popup": "^2.0.4",
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start": "react-scripts start",

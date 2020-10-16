@@ -1,53 +1,84 @@
+import React, { useState } from "react";
 import "./NavStyle.css";
-import React from "react";
-import MyCalendar from "./CalendarComponents";
+import { useAuth0 } from "@auth0/auth0-react";
+import request from "../../utils/request";
+import endpoints from "../../endpoints";
+import Loading from "../Loading";
 
-class NavBars extends React.Component {
-    constructor(props) {
-        super(props);
-        // Reference for the navigation bar "sideNav"
-        this.navRef = React.createRef();
-    }
-    
-    //Close the navigation bar
-    //Set the width of the bar to 0 to close it
-    closeNav = () => {
-        return this.navRef.current.style.width = 0;
-    }
+function NavBars() {
+    // Reference for the navigation bar "sideNav"
+    let [nav, setNavRef] = useState(false);
 
-    //Open the navigation bar
-    //Set the width of the bar to 250px to open it
-    openNav = () => {
-        return this.navRef.current.style.width = '20%';
-    }
+    let {
+        loading,
+        loginWithRedirect,
+        logout,
+        getAccessTokenSilently,
+        isAuthenticated,
+    } = useAuth0();
 
-    //Function to call the calendar and displays it
-    callCalendar = () => {
-        return <div class="test">Hello</div>
+    let toogleRef = () => {
+
+        nav ? setNavRef(false) : setNavRef(true)
     }
 
-    render() {
-        return (
-            <div>
-                <div class="topNavBar">
-                    <a className="login" href="#login">Login</a>
-                    <a class="home" href="#">Home</a>
-                    <span class="btnToolbox" onClick={this.openNav}>ToolBox</span>
-                </div>
+    let handleLocationsClick = async (e) => {
+        e.preventDefault();
+        let locations = await request(
+            `${process.env.REACT_APP_SERVER_URL}${endpoints.locations}`,
+            getAccessTokenSilently,
+            loginWithRedirect
+        );
+    };
 
-                <div id="toolbox" className="toolbox" ref={this.navRef}>
-                    <a href="javascript:void(0)" className="btnClose" onClick={this.closeNav}>&times;</a>
-                    <input class="searchBar" type="text" placeholder="Search.."/>
-                    <br/>
-                    <button class="btnSearch">Search</button>
-                    <a >Calendar</a>
-                    <a href="#">Contact</a>
+    let handleLogoutClick = async (e) => {
+        e.preventDefault();
+        /*
+        returnTo parameter is necessary because multiple
+        apps use the same authentication backend
+        */
+        logout({returnTo: window.location.origin});
+    };
 
-                </div>
+    if (loading) {
+        return <Loading/>;
+    }
+
+    return (
+        <div>
+            <div className="topNavBar">
+                <a className="btnToolbox" onClick={toogleRef}>ToolBox</a>
+                {isAuthenticated ? (
+                    <a
+                        className="App-link Logout-link"
+                        href="#"
+                        onClick={handleLogoutClick}
+                    >
+                        Logout
+                    </a>
+                ) : (
+                    <a
+                        className="App-link"
+                        href="#"
+                        onClick={handleLocationsClick}
+                    >
+                        Login
+                    </a>
+                )}
+
             </div>
 
-        );
-    }
+            <div id="toolbox" className="toolbox" style={{width: nav? "20%" : 0}}>
+                <a href="javascript:void(0)" className="btnClose" onClick={toogleRef}>&times;</a>
+                <input class="searchBar" type="text" placeholder="Search.."/>
+                <br/>
+                <button class="btnSearch">Search</button>
+                <a>Calendar</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+
+    );
 }
 
 export default NavBars;
