@@ -18,12 +18,15 @@
     "react-calendar": "^3.1.0",
     "react-day-picker": "^7.4.8",
     "react-dom": "^16.13.1",
+    "react-geolocated": "^3.0.1",
     "react-icons": "^3.11.0",
     "react-leaflet": "^2.7.0",
+    "react-native-geolocation-service": "^5.0.0",
     "react-nice-dates": "^3.0.7",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "reactjs-popup": "^2.0.4",
+    "use-position": "^0.0.7",
     "yup": "^0.29.3"
   },
   "scripts": {

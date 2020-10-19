@@ -1,41 +1,76 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import {Map, Marker, Popup, TileLayer} from "react-leaflet";
 import "./MapStyle.css"
 
+import { usePosition } from 'use-position';
 
-class MyMap extends React.Component {
-    constructor() {
-        super();
-        //Coordinates of the establishment location
-        this.coord = {
-            lat: 46.28306238842186,
-            lng: 7.5387810396194554,
-            zoom: 12
-        }
+function MyMap (props) {
+    //Const to keep track of the position of the user
+    const watch = true;
 
-        this.state = {}
+    //Const for the position
+    const {
+        latitude,
+        longitude,
+        timestamp,
+        accuracy,
+        error,
+    } = usePosition(watch);
+
+    //Const for the array of each establishment location
+    const Establishments = ([
+        [46.2806238842186, 7.53847578],
+        [46.29062388, 7.5384757872227],
+        [46.28623885, 7.538475787222],
+        [46.2823883, 7.53847578722],
+        [46.2838842186, 7.538475787222],
+        [46.28388421, 7.53847],
+        [46.2930623884218, 7.5384],
+    ]);
+
+    //Return Markers for each location around the user
+    const establishmentLocation  = (
+        Establishments.map((value, index) => {
+            return <Marker key={index} position={value} onClick={props.toggleChangeDisplay}/>
+        })
+    )
+
+    //Position of the user
+    const userPosition = (
+        <Marker position={[latitude,longitude]} onClick={props.toggleChangeDisplay}>
+            <Popup>
+                <code>
+                    latitude: {latitude}<br/>
+                    longitude: {longitude}<br/>
+                    timestamp: {timestamp}<br/>
+                    accuracy: {accuracy && `${accuracy}m`}<br/>
+                    error: {error}
+                </code>
+            </Popup>
+        </Marker>
+    );
 
 
-    }
+    /* When the page load the latitude and longitude aren't necessarily loaded yet*/
+    return (
 
+        <div className="Map">
 
-    render() {
-
-        return (
-            <div class="Map">
-                <Map center={[this.coord.lat, this.coord.lng]} zoom={this.coord.zoom}>
-
+            {longitude && latitude ?
+                <Map center={[latitude, longitude]} zoom={14}>
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>
-                        contributors'
+                            contributors'
                     />
-                    <Marker position={[this.coord.lat, this.coord.lng]} onClick={this.message}>
+                    {userPosition}
+                    {establishmentLocation}
+                </Map> : <div>Getting geolocation...</div>
+            }
+        </div>
+    );
 
-                    </Marker>
-                </Map>
-            </div>
-        );
-    }
-}
+};
+
+
 export default MyMap;

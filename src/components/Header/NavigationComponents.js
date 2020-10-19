@@ -71,9 +71,9 @@ function NavBars() {
 
             <div id="toolbox" className="toolbox" style={{width: nav ? "20%" : 0}}>
                 <a href="javascript:void(0)" className="btnClose" onClick={toogleRef}>&times;</a>
-                <input class="searchBar" type="text" placeholder="Search.."/>
+                <input className="searchBar" type="text" placeholder="Search.."/>
                 <br/>
-                <button class="btnSearch">Search</button>
+                <button className="btnSearch">Search</button>
                 <a>Calendar</a>
                 <MyCalendar/>
                 <a href="#">Contact</a>
