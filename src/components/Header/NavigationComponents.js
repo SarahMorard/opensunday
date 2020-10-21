@@ -1,14 +1,20 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./NavStyle.css";
 import {useAuth0} from "@auth0/auth0-react";
 import request from "../../utils/request";
 import endpoints from "../../endpoints";
 import Loading from "../Loading";
 import MyCalendar from "./CalendarComponents";
+import {UserContext} from "../../Context/UserContext";
+import {useHistory} from "react-router-dom";
+
 
 function NavBars() {
     // Reference for the navigation bar "sideNav"
     let [nav, setNavRef] = useState(false);
+    let [administrator, setAdmin] = useState(false);
+    let [mapVisible, setMapVisible] = useState(true);
+    let history = useHistory();
 
     let {
         loading,
@@ -16,11 +22,27 @@ function NavBars() {
         logout,
         getAccessTokenSilently,
         isAuthenticated,
+        user
     } = useAuth0();
 
-    let toogleRef = () => {
+    useEffect(() => {
+        console.log(UserContext.admin);
+        console.log(UserContext.firstname);
+        console.log(UserContext.lastname);
+        console.log(UserContext.token);
+        if(UserContext){
 
-        nav ? setNavRef(false) : setNavRef(true)
+            setAdmin(true);
+        }
+    },[user])
+
+    let toogleRef = () => {
+        if(mapVisible) {
+            nav ? setNavRef(false) : setNavRef(true)
+        } else {
+            setMapVisible(true);
+            history.push("/");
+        }
     }
 
     let handleLocationsClick = async (e) => {
@@ -30,6 +52,7 @@ function NavBars() {
             getAccessTokenSilently,
             loginWithRedirect
         );
+
     };
 
     let handleLogoutClick = async (e) => {
@@ -43,6 +66,22 @@ function NavBars() {
 
     if (loading) {
         return <Loading/>;
+    }
+
+    let onclickModifications = () => {
+        if(mapVisible){
+            setMapVisible(false);
+            history.push("/modif");
+        } else {
+            setMapVisible(true);
+            history.push("/");
+        }
+
+        console.log(mapVisible);
+    }
+
+    let displayForm = () => {
+        history.push("/addPOI")
     }
 
     return (
@@ -66,17 +105,22 @@ function NavBars() {
                         Login
                     </a>
                 )}
-
+                {administrator ? (
+                    <a
+                        className="App-link"
+                        href="#"
+                        onClick={onclickModifications}
+                    >
+                        {mapVisible ? "Modifications List" : "Map"}
+                    </a>
+                ) : null}
             </div>
 
             <div id="toolbox" className="toolbox" style={{width: nav ? "20%" : 0}}>
                 <a href="javascript:void(0)" className="btnClose" onClick={toogleRef}>&times;</a>
-                <input class="searchBar" type="text" placeholder="Search.."/>
-                <br/>
-                <button class="btnSearch">Search</button>
                 <a>Calendar</a>
                 <MyCalendar/>
-                <a href="#">Contact</a>
+                <a onClick={displayForm}>Create an establishment</a>
             </div>
         </div>
 

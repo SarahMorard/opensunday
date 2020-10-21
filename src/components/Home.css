@@ -1,0 +1,14 @@
+.registerForm {
+    width: 60%;
+    display: block;
+    background-color: black;
+    padding: 15% 20%;
+}
+
+h2 {
+   color: white;
+}
+
+.error {
+    color: red;
+}

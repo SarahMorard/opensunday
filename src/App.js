@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
-import NavBars from "./components/Header/NavigationComponents";
-import MyMap from "./pages/MapPage";
-import InfosEstablishment from "./components/Infos/InfosEstablishmentComponents";
+import { BrowserRouter as Router } from "react-router-dom";
+import Home from "./components/Home";
+
 
 function App() {
-    const [display, setDisplay] = useState(0);
-
-
 
     return (
-        <div class="App">
-            <NavBars />
-            <InfosEstablishment />
-            <MyMap/>
-        </div>
+        <Router>
+            <div className="App">
+                <Home/>
+            </div>
+        </Router>
     );
 }
 
