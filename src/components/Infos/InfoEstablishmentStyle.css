@@ -51,17 +51,43 @@
     border: 2px solid cornflowerblue;
     transition-duration: 0.4s;
     padding: 2%;
+}
+
+/* Style for the button modify */
+.btnModify {
+    border-radius: 5px;
+    background-color: #282c34;
+    color: white;
+    font-weight: bold;
+    border: 2px solid cornflowerblue;
+    transition-duration: 0.4s;
+    padding: 2%;
+    margin-top: 10%;
+}
+
+
+/* Style when the mouse goes over the button modify*/
+.btnModify:hover {
+    background-color: cornflowerblue;
+    color: white;
+    cursor: pointer;
 
 }
 
-/* Style when the mouse goes over the button */
+/* Style when the mouse goes over the button favourit*/
 .btnFav:hover {
     background-color: cornflowerblue;
     color: white;
     cursor: pointer;
+
 }
+
 
 /* Stars ratting */
 .stars {
-   margin: 10%;
+   margin: 5%;
+}
+
+a {
+    color: white;
 }
