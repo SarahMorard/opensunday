@@ -11,10 +11,11 @@ import * as Yup from "yup";
 import {UserContext} from "../Context/UserContext";
 import Modifications from "./Modifications/Modifications";
 import CreationForm from "./Forms/CreationForm"
+import Request from "../utils/request"
 
 function Home() {
 
-    const {user, logout} = useAuth0();
+    const {user, logout, getAccessTokenSilently, loginWithRedirect} = useAuth0();
     const [userName, setUsername] = useState(null);
     const [display, setDisplay] = useState(true);
     const [navbarVisible, setNavbarVisible] = useState(true);
@@ -46,7 +47,12 @@ function Home() {
         // fetch user from DB
         async function fetchUserFromDB() {
 
-            //envoye l'id du user logged au backend et récup le user ou null
+            //this request don't work :/
+            /*const userTest = await Request(
+                `${process.env.REACT_APP_SERVER_URL}` + "/api/users/" + user.sub,
+                getAccessTokenSilently,
+                loginWithRedirect
+            );*/
             const userTest = {
                 firstname: "Nicolas",
                 lastname: "Constantin",
@@ -85,12 +91,12 @@ function Home() {
             {navbarVisible ? <NavBars/> : null}
             <Route path="/"
                 exact
-                render={() => <>
-
-                   <InfosEstablishment display={display} toogleChangeDisplay={toogleChangeDisplay}/>
+                render={() =>
+                    <>
                    <MyMap toogleChangeDisplay={toogleChangeDisplay}/>
-                   </>
-                }
+                    <InfosEstablishment />
+                    </>
+                    }
             />
             <Route path="/register"
                 render={() =>

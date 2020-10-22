@@ -6,15 +6,15 @@ import endpoints from "../../endpoints";
 import Loading from "../Loading";
 import MyCalendar from "./CalendarComponents";
 import {UserContext} from "../../Context/UserContext";
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 
 
 function NavBars() {
     // Reference for the navigation bar "sideNav"
     let [nav, setNavRef] = useState(false);
     let [administrator, setAdmin] = useState(false);
-    let [mapVisible, setMapVisible] = useState(true);
     let history = useHistory();
+    let location = useLocation();
 
     let {
         loading,
@@ -26,22 +26,22 @@ function NavBars() {
     } = useAuth0();
 
     useEffect(() => {
-        console.log(UserContext.admin);
-        console.log(UserContext.firstname);
-        console.log(UserContext.lastname);
-        console.log(UserContext.token);
         if(UserContext){
 
             setAdmin(true);
         }
     },[user])
 
-    let toogleRef = () => {
-        if(mapVisible) {
-            nav ? setNavRef(false) : setNavRef(true);
-        } else {
-            onclickModifications();
+    let toogleRef = (e) => {
+
+        e.preventDefault();
+        console.log(location);
+        if(location.pathname == "/") {
+            setNavRef(value => {
+                return !value;
+            });
         }
+
     }
 
     let handleLocationsClick = async (e) => {
@@ -67,25 +67,27 @@ function NavBars() {
         return <Loading/>;
     }
 
-    let onclickModifications = () => {
-
-        let location = "/"
-        setMapVisible(visible => {
-            if(visible) location = "/modif";
-            return !visible;
-        });
-
-        history.push(location);
+    let onclickModifications = (e) => {
+        e.preventDefault();
+        history.push("/modif");
     }
 
-    let displayForm = () => {
+    let onclickMap = (e) => {
+        e.preventDefault();
+        history.push("/")
+    }
+
+    let displayForm = (e) => {
+        e.preventDefault();
         history.push("/addPOI")
     }
 
     return (
         <div>
             <div className="topNavBar">
-                <a className="btnToolbox" onClick={toogleRef}>ToolBox</a>
+                {location.pathname === "/" ?
+                    <a className="btnToolbox" onClick={toogleRef} href={"#"}>ToolBox </a> : null
+                }
                 {isAuthenticated ? (
                     <a
                         className="App-link Logout-link"
@@ -103,25 +105,20 @@ function NavBars() {
                         Login
                     </a>
                 )}
-
                 {/*if an admin is logged, show the button for see the modifications / to come again in the map*/}
                 {administrator ? (
-                    <a
-                        className="App-link"
-                        href="#"
-                        onClick={onclickModifications}
-                    >
-                        {/*if the map is visible, the button is "Modification list" and if the modif is visible, the button is "map"*/}
-                        {mapVisible ? "Modifications List" : "Map"}
-                    </a>
+                    location.pathname === "/" ?
+                        <a className="App-link" href="#" onClick={onclickModifications}>Modifications List</a>
+                    :
+                        <a className="App-link" href="#" onClick={onclickMap}>Return to map</a>
                 ) : null}
             </div>
 
             {/*the content of the toolbox*/}
             <div id="toolbox" className="toolbox" style={{width: nav ? "20%" : 0}}>
-                <a href="javascript:void(0)" className="btnClose" onClick={toogleRef}>&times;</a>hopy
+                <a href="#" className="btnClose" onClick={toogleRef}>&times;</a>
                 <MyCalendar/>
-                <a onClick={displayForm}>Create an establishment</a>
+                <a onClick={displayForm} href={"#"}>Create an establishment</a>
             </div>
         </div>
 
