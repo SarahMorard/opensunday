@@ -2,6 +2,7 @@ import React from "react";
 import {Field, ErrorMessage} from "formik";
 import TextError from "./TextErrorComponent";
 
+//The component Formik for Input text field
 function Input (props) {
     const { label, name, ...rest } = props;
 

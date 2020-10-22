@@ -1,14 +1,18 @@
 import React, {useEffect, useState} from "react";
 import "./Modifications.css";
 
+//take all the modifications in the db and render it for the admin
 function Modifications () {
 
+    //a state with the list of modifications
     const [modifs, setModif] = useState(null);
 
+    //at the load of the page, get the modifications from db
     useEffect(() => {
 
         async function fetchModificationsFromDb () {
             //call the db for have the modifications (return a list of objects )
+
             //temporary :
             const modifTest1 = {
                 modifID: 1,
@@ -48,15 +52,15 @@ function Modifications () {
         }
 
         fetchModificationsFromDb();
-
-
     }, []);
 
+    //the effect of the ban button
     let banUser = (props) => {
         //call the db for ban "props"
         console.log(props);
     }
 
+    //return all the modifications made by the users
     return (
         <ul>
             {modifs===null ? null : modifs.map((item, index) =>

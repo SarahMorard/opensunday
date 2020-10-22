@@ -2,6 +2,7 @@ import React, {useContext, useState} from "react";
 import "./InfoEstablishmentStyle.css";
 import BeautyStars from 'beauty-stars';
 
+//render the div with the infos of one selected establishment
 function InfosEstablishment (props) {
 
     /* State of the stares for the establishment evaluation */

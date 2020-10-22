@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import FormikControl from "../FormTemplate/FormikControl";
 import "./FormComponents.css";
 
+//A template for the formik forms
 function FormComponent () {
     const dropDownOptions = [
         { key: "Select an option", value: ""},

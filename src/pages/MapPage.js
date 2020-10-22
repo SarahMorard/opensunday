@@ -8,6 +8,7 @@ import { Route, useHistory } from "react-router-dom";
 
 function MyMap (props) {
 
+    //State for what to render in the infoEstablishment
     const [poi, setPoi] = useState({
         name: "",
 
@@ -30,7 +31,7 @@ function MyMap (props) {
         error,
     } = usePosition(watch);
 
-    /* CODE BRUTE POUR TEST */
+    /* BRUTE CODE FOR TEST */
     const E1 = {
         eLat: 46.2806238842186,
         eLng: 7.53847578,
@@ -66,15 +67,11 @@ function MyMap (props) {
         E1, E2, E3, E4
     ]);
 
+    //go to the URL of one establishment and render the infos for it
     let callPathMap = async (id) => {
         /* Call backend with id, return all infos of establishment -> stock in a variable*/
         history.push("/location/" + id )
     }
-
-
-
-
-
 
    /* Return Markers for each location around the user */
     const establishmentLocation  = (

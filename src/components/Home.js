@@ -13,34 +13,47 @@ import Modifications from "./Modifications/Modifications";
 import CreationForm from "./Forms/CreationForm"
 import Request from "../utils/request"
 
+//a function for render all the route and use the history
 function Home() {
 
+    //All the Auth0 methods needed
     const {user, logout, getAccessTokenSilently, loginWithRedirect} = useAuth0();
+
+    //take the username of github for the welcome message
     const [userName, setUsername] = useState(null);
+
+    //the state for the InfoEstablishment
     const [display, setDisplay] = useState(true);
+
+    //set if the navbar is render or not
     const [navbarVisible, setNavbarVisible] = useState(true);
+
     let history = useHistory();
 
     const initialValues = {
         firstname: "",
         lastname: ""
     };
+
     const validationSchema = Yup.object({
         firstname: Yup.string().required("Required"),
         lastname: Yup.string().required("Required")
     });
 
+    //change the navbarVisible
     let toogleNavbar = () => {
         setNavbarVisible(visible => {
            return !visible;
         });
     }
 
+    //when someone register, put him in the db and go back in the home
     const onsubmit = () => {
         //call the db with firstname and lastname for insert a user in the db
         history.goBack();
         toogleNavbar();
     }
+
 
     useEffect(() => {
 
@@ -62,12 +75,14 @@ function Home() {
             //const userTest = null;
             let dbUser = userTest;
 
+            //is the user already in our db if yes, connect if not go in the register page
             if (dbUser !== null) {
+                //is the user ban ? if yes, don't let him to connect
                 if(dbUser.ban){
                     alert("You are ban");
                     logout({returnTo: window.location.origin});
                 } else {
-                    //context !
+                    //set the context with the user infos!
                 }
 
             } else {
@@ -76,6 +91,7 @@ function Home() {
             }
         }
 
+        //set the github nickname of the guy who connect
         if (user) {
             setUsername(user.nickname);
             fetchUserFromDB();
@@ -88,7 +104,10 @@ function Home() {
 
     return (
         <>
+            {/*render the navbar*/}
             {navbarVisible ? <NavBars/> : null}
+
+            {/*the welcome page with the navbar and the map*/}
             <Route path="/"
                 exact
                 render={() =>
@@ -97,6 +116,8 @@ function Home() {
                    </>
                 }
             />
+
+            {/*the register page with the form*/}
             <Route path="/register"
                 render={() =>
                     <Formik
@@ -118,6 +139,8 @@ function Home() {
                         }
                     </Formik>}
             />
+
+            {/*The page with all the modifications done by some users (for the admins)*/}
             <Route path="/modif"
                 render={() =>
                     <>
@@ -125,6 +148,8 @@ function Home() {
                     </>
                 }
             />
+
+            {/*the page for create a new establishment*/}
             <Route path="/addPOI"
                 render={() =>
                     <>
@@ -132,6 +157,8 @@ function Home() {
                     </>
                 }
             />
+
+            {/*the route for the details of each establishment (/location/id) */}
             <Route path="/location"
                    render={() =>
                        <>

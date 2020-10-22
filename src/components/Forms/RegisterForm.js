@@ -6,6 +6,7 @@ import "./FormComponents.css";
 import "../../App"
 import toogleRegister from "../../App"
 
+//The register form
 function RegisterForm () {
 
     const initialValues = {

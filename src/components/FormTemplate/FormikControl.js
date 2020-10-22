@@ -5,6 +5,7 @@ import Select from "./Select";
 import RadioButton from "./RadioButton";
 import CheckboxGroup from "./CheckboxGroup";
 
+//The component Formik for select witch component is required
 function FormikControl (props) {
     const { control, ...rest } = props;
     switch (control){

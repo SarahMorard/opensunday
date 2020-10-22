@@ -2,6 +2,7 @@ import React from "react";
 import {Field, ErrorMessage} from "formik";
 import TextError from "./TextErrorComponent";
 
+//The component Formik for checkbox
 function CheckboxGroup(props) {
     const {label, name, options, ...rest} = props;
 

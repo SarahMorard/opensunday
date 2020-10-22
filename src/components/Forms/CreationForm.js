@@ -6,7 +6,8 @@ import "./FormComponents.css";
 import "../../App"
 import toogleRegister from "../../App"
 
-function RegisterForm () {
+//The Creation form (not done yet)
+function CreationForm () {
 
     const initialValues = {
         firstname: "",
@@ -34,4 +35,4 @@ function RegisterForm () {
         </Formik>
     )
 }
-export default RegisterForm;
+export default CreationForm;

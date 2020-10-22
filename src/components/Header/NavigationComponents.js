@@ -8,14 +8,19 @@ import MyCalendar from "./CalendarComponents";
 import {UserContext} from "../../Context/UserContext";
 import {useHistory, useLocation} from "react-router-dom";
 
-
+//the function for render and manage the navbar
 function NavBars() {
     // Reference for the navigation bar "sideNav"
     let [nav, setNavRef] = useState(false);
+
+    //A boolean state for know when display the admin stuff
     let [administrator, setAdmin] = useState(false);
+
+    //Some React Router components
     let history = useHistory();
     let location = useLocation();
 
+    //All the Auth0 methods needed
     let {
         loading,
         loginWithRedirect,
@@ -25,25 +30,25 @@ function NavBars() {
         user
     } = useAuth0();
 
+    //effect triggered when a new user is logged for know if it's an admin or not
     useEffect(() => {
         if(UserContext){
-
+            //change if the user is an admin with the context (context not finished yet)
             setAdmin(true);
         }
     },[user])
 
+    //if we are on the map, set the toolbox open or close (conditional rendering in the return)
     let toogleRef = (e) => {
-
         e.preventDefault();
-        console.log(location);
-        if(location.pathname == "/") {
+        if(location.pathname === "/" || location.pathname === "/location") {
             setNavRef(value => {
                 return !value;
             });
         }
-
     }
 
+    //the login method for login with github
     let handleLocationsClick = async (e) => {
         e.preventDefault();
         let locations = await request(
@@ -54,6 +59,7 @@ function NavBars() {
 
     };
 
+    //the logout method
     let handleLogoutClick = async (e) => {
         e.preventDefault();
         /*
@@ -67,16 +73,19 @@ function NavBars() {
         return <Loading/>;
     }
 
+    //when click on the button, push the modif page
     let onclickModifications = (e) => {
         e.preventDefault();
         history.push("/modif");
     }
 
+    //when click on the button, push the default page
     let onclickMap = (e) => {
         e.preventDefault();
         history.push("/")
     }
 
+    //when click on the link, render the form for add an establishment (not finished yet)
     let displayForm = (e) => {
         e.preventDefault();
         history.push("/addPOI")
@@ -85,9 +94,11 @@ function NavBars() {
     return (
         <div>
             <div className="topNavBar">
-                {location.pathname === "/" ?
+                {/*Render the toolbox button if the map is visible*/}
+                {location.pathname === "/" || location.pathname === "/location" ?
                     <a className="btnToolbox" onClick={toogleRef} href={"#"}>ToolBox </a> : null
                 }
+                {/*render the login button if no one is logged and the logout button if someone is connected*/}
                 {isAuthenticated ? (
                     <a
                         className="App-link Logout-link"
