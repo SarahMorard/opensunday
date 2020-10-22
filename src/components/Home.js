@@ -94,9 +94,8 @@ function Home() {
                 render={() =>
                     <>
                    <MyMap toogleChangeDisplay={toogleChangeDisplay}/>
-                    <InfosEstablishment />
-                    </>
-                    }
+                   </>
+                }
             />
             <Route path="/register"
                 render={() =>
@@ -132,6 +131,15 @@ function Home() {
                         <CreationForm/>
                     </>
                 }
+            />
+            <Route path="/location"
+                   render={() =>
+                       <>
+
+                           <InfosEstablishment display={display}/>
+                           <MyMap/>
+                       </>
+                   }
             />
         </>
     );
