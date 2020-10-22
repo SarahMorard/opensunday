@@ -4,17 +4,14 @@ import BeautyStars from 'beauty-stars';
 
 function InfosEstablishment (props) {
 
-     let [stares, setStares] = useState(0);
+    /* State of the stares for the establishment evaluation */
+    let [stares, setStares] = useState(0);
 
-    //Function to add the establishment to the favorit list
-    const addToFavorits = () => {
-
-    }
 
     return(
-        <div className="infoEstablishment" style={{width: props.display ? '20%': '0%'}}>
 
-            <a href="javascript:void(0)" class="infosClosebtn" onClick={props.toggleChangeDisplay}>&times;</a>
+        <div className="infoEstablishment" style={{width: props.display ? '20%': '0%'}}>
+            <a href="javascript:void(0)" className="infosClosebtn">&times;</a>
             <img className="image" src="https://www.technopole.ch/data/images/galeries/ciel/IMG_1341.JPG"/>
             <div className="infosContainer">
                 <h3><b>Technopole</b></h3>

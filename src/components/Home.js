@@ -87,7 +87,6 @@ function Home() {
                 exact
                 render={() => <>
 
-                   <InfosEstablishment display={display} toogleChangeDisplay={toogleChangeDisplay}/>
                    <MyMap toogleChangeDisplay={toogleChangeDisplay}/>
                    </>
                 }
@@ -126,6 +125,15 @@ function Home() {
                         <CreationForm/>
                     </>
                 }
+            />
+            <Route path="/location"
+                   render={() =>
+                       <>
+
+                           <InfosEstablishment display={display}/>
+                           <MyMap/>
+                       </>
+                   }
             />
         </>
     );
