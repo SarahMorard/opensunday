@@ -74,7 +74,7 @@ function Modifications () {
                     {item.long ? <span>, long : {item.long}</span> : null}
                     {item.website ? <span>, website : {item.website}</span> : null}
                     {item.validated ? <span>, validated : {item.validated}</span> : null}
-                    <button onClick={banUser(item.idUser)}>Ban user {item.idUser}</button>
+                    <button onClick={() => banUser(item.idUser)}>Ban user {item.idUser}</button>
                 </li>
             )}
         </ul>

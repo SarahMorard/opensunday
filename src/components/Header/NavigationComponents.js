@@ -38,10 +38,9 @@ function NavBars() {
 
     let toogleRef = () => {
         if(mapVisible) {
-            nav ? setNavRef(false) : setNavRef(true)
+            nav ? setNavRef(false) : setNavRef(true);
         } else {
-            setMapVisible(true);
-            history.push("/");
+            onclickModifications();
         }
     }
 
@@ -69,15 +68,14 @@ function NavBars() {
     }
 
     let onclickModifications = () => {
-        if(mapVisible){
-            setMapVisible(false);
-            history.push("/modif");
-        } else {
-            setMapVisible(true);
-            history.push("/");
-        }
 
-        console.log(mapVisible);
+        let location = "/"
+        setMapVisible(visible => {
+            if(visible) location = "/modif";
+            return !visible;
+        });
+
+        history.push(location);
     }
 
     let displayForm = () => {
@@ -105,20 +103,23 @@ function NavBars() {
                         Login
                     </a>
                 )}
+
+                {/*if an admin is logged, show the button for see the modifications / to come again in the map*/}
                 {administrator ? (
                     <a
                         className="App-link"
                         href="#"
                         onClick={onclickModifications}
                     >
+                        {/*if the map is visible, the button is "Modification list" and if the modif is visible, the button is "map"*/}
                         {mapVisible ? "Modifications List" : "Map"}
                     </a>
                 ) : null}
             </div>
 
+            {/*the content of the toolbox*/}
             <div id="toolbox" className="toolbox" style={{width: nav ? "20%" : 0}}>
-                <a href="javascript:void(0)" className="btnClose" onClick={toogleRef}>&times;</a>
-                <a>Calendar</a>
+                <a href="javascript:void(0)" className="btnClose" onClick={toogleRef}>&times;</a>hopy
                 <MyCalendar/>
                 <a onClick={displayForm}>Create an establishment</a>
             </div>

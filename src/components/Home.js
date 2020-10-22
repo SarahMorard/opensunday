@@ -14,8 +14,10 @@ import CreationForm from "./Forms/CreationForm"
 
 function Home() {
 
-    const {user, getAccessTokenSilently, logout} = useAuth0();
+    const {user, logout} = useAuth0();
     const [userName, setUsername] = useState(null);
+    const [display, setDisplay] = useState(true);
+    const [navbarVisible, setNavbarVisible] = useState(true);
     let history = useHistory();
 
     const initialValues = {
@@ -27,9 +29,16 @@ function Home() {
         lastname: Yup.string().required("Required")
     });
 
+    let toogleNavbar = () => {
+        setNavbarVisible(visible => {
+           return !visible;
+        });
+    }
+
     const onsubmit = () => {
         //call the db with firstname and lastname for insert a user in the db
         history.goBack();
+        toogleNavbar();
     }
 
     useEffect(() => {
@@ -42,8 +51,9 @@ function Home() {
                 firstname: "Nicolas",
                 lastname: "Constantin",
                 admin: true,
-                ban: true
+                ban: false
             };
+            //const userTest = null;
             let dbUser = userTest;
 
             if (dbUser !== null) {
@@ -52,18 +62,10 @@ function Home() {
                     logout({returnTo: window.location.origin});
                 } else {
                     //context !
-                    UserContext.token = await getAccessTokenSilently();
-                    UserContext.firstname = dbUser.firstname;
-                    UserContext.lastname = dbUser.lastname;
-                    UserContext.admin = dbUser.admin;
-
-                    console.log(UserContext.admin);
-                    console.log(UserContext.firstname);
-                    console.log(UserContext.lastname);
-                    console.log(UserContext.token);
                 }
 
             } else {
+                toogleNavbar();
                 history.push('/register')
             }
         }
@@ -74,16 +76,19 @@ function Home() {
         }
     }, [user]);
 
-
+    const toogleChangeDisplay = () => {
+        setDisplay(d => !d);
+    }
 
     return (
         <>
+            {navbarVisible ? <NavBars/> : null}
             <Route path="/"
                 exact
                 render={() => <>
-                   <NavBars/>
-                   <InfosEstablishment/>
-                   <MyMap/>
+
+                   <InfosEstablishment display={display} toogleChangeDisplay={toogleChangeDisplay}/>
+                   <MyMap toogleChangeDisplay={toogleChangeDisplay}/>
                    </>
                 }
             />
@@ -111,7 +116,6 @@ function Home() {
             <Route path="/modif"
                 render={() =>
                     <>
-                        <NavBars/>
                         <Modifications/>
                     </>
                 }

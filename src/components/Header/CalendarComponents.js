@@ -29,17 +29,16 @@ class MyCalendar extends React.Component  {
     render() {
         return (
             <div className="calendar">
-                <DayPicker
-                    onDayClick={this.handleDayClick}
-                    selectedDays={this.state.selectedDay}
-
-                />
                 {this.state.selectedDay ? (
                     <p>You selected {this.state.selectedDay.toLocaleDateString()}</p>
                 ) : (
                     <p>Please select a day.</p>
                 )}
+                <DayPicker
+                    onDayClick={this.handleDayClick}
+                    selectedDays={this.state.selectedDay}
 
+                />
             </div>
         );
     }

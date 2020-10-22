@@ -74,7 +74,7 @@ li a {
 }
 
 /* Header menu links */
-.toolbox a, .login a {
+.toolbox a{
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -91,7 +91,7 @@ li a {
 }
 
 /* Position and style the close button */
-.login .btnClose, .toolbox .btnClose {
+.toolbox .btnClose {
     position: absolute;
     top: 0;
     font-size: 36px;
@@ -137,7 +137,7 @@ li a {
     color: cornflowerblue;
 }
 
-.label, .login p {
+.label{
     color: #ffffff;
     display: block;
 }
@@ -147,10 +147,11 @@ li a {
     text-align: left;
 }
 
-.login p {
-    text-align: center;
-}
-
 .field {
     width: 60%;
+}
+
+p {
+    font-size: 20px;
+    color: white;
 }
