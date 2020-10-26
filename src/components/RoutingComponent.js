@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import "./Home.css";
+import "./RoutingComponent.css";
 import {useAuth0} from "@auth0/auth0-react";
 import {Route, useHistory} from "react-router-dom";
 import NavBars from "./Header/NavigationComponents";
@@ -15,7 +15,7 @@ import Request from "../utils/request"
 import endpoints from "../endpoints.json"
 
 //a function for render all the route and use the history
-function Home() {
+function RoutingComponent() {
 
     //All the Auth0 methods needed
     const {user, logout, getAccessTokenSilently, loginWithRedirect} = useAuth0();
@@ -54,8 +54,6 @@ function Home() {
                 dbUser = null;
             }
 
-            console.log(dbUser);
-
             //is the user already in our db if yes, connect if not go in the register page
             if (dbUser !== null) {
                 //is the user ban ? if yes, don't let him to connect
@@ -71,7 +69,6 @@ function Home() {
                 history.push('/register')
             }
         }
-
         //set the github nickname of the guy who connect
         if (user) {
             setUsername(user.nickname);
@@ -97,9 +94,22 @@ function Home() {
     }
 
     //when someone register, put him in the db and go back in the home
-    const onsubmit = () => {
+    const onsubmit = async(values) => {
         //call the db with firstname and lastname for insert a user in the db
-        history.goBack();
+
+        const data = {
+            githubID: user.sub,
+            firstname: values.firstname,
+            lastname: values.lastname
+        };
+
+        await Request(
+            `${process.env.REACT_APP_SERVER_URL}${endpoints.users}`,
+            getAccessTokenSilently,
+            loginWithRedirect,
+            "POST",
+            data
+        );
         toogleNavbar();
     }
 
@@ -174,4 +184,4 @@ function Home() {
 
 }
 
-export default Home;
+export default RoutingComponent;
