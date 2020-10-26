@@ -12,6 +12,7 @@ import {UserContext} from "../Context/UserContext";
 import Modifications from "./Modifications/Modifications";
 import CreationForm from "./Forms/CreationForm"
 import Request from "../utils/request"
+import endpoints from "../endpoints.json"
 
 //a function for render all the route and use the history
 function Home() {
@@ -35,20 +36,25 @@ function Home() {
         // fetch user from DB
         async function fetchUserFromDB() {
 
-            //this request don't work :/
-            /*const userTest = await Request(
-                `${process.env.REACT_APP_SERVER_URL}` + "/api/users/" + user.sub,
+            const userTest = await Request(
+                `${process.env.REACT_APP_SERVER_URL}${endpoints.users}` + "/" + user.sub,
                 getAccessTokenSilently,
                 loginWithRedirect
-            );*/
-            const userTest = {
+            );
+            /*const userTest = {
                 firstname: "Nicolas",
                 lastname: "Constantin",
                 admin: true,
                 ban: false
-            };
+            };*/
             //const userTest = null;
             let dbUser = userTest;
+
+            if(dbUser.status === 404) {
+                dbUser = null;
+            }
+
+            console.log(dbUser);
 
             //is the user already in our db if yes, connect if not go in the register page
             if (dbUser !== null) {
