@@ -132,7 +132,6 @@ function NavBars() {
                 <a onClick={displayForm} href={"#"}>Create an establishment</a>
             </div>
         </div>
-
     );
 
 }

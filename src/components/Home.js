@@ -30,31 +30,6 @@ function Home() {
 
     let history = useHistory();
 
-    const initialValues = {
-        firstname: "",
-        lastname: ""
-    };
-
-    const validationSchema = Yup.object({
-        firstname: Yup.string().required("Required"),
-        lastname: Yup.string().required("Required")
-    });
-
-    //change the navbarVisible
-    let toogleNavbar = () => {
-        setNavbarVisible(visible => {
-           return !visible;
-        });
-    }
-
-    //when someone register, put him in the db and go back in the home
-    const onsubmit = () => {
-        //call the db with firstname and lastname for insert a user in the db
-        history.goBack();
-        toogleNavbar();
-    }
-
-
     useEffect(() => {
 
         // fetch user from DB
@@ -97,6 +72,30 @@ function Home() {
             fetchUserFromDB();
         }
     }, [user]);
+
+    const initialValues = {
+        firstname: "",
+        lastname: ""
+    };
+
+    const validationSchema = Yup.object({
+        firstname: Yup.string().required("Required"),
+        lastname: Yup.string().required("Required")
+    });
+
+    //change the navbarVisible
+    let toogleNavbar = () => {
+        setNavbarVisible(visible => {
+           return !visible;
+        });
+    }
+
+    //when someone register, put him in the db and go back in the home
+    const onsubmit = () => {
+        //call the db with firstname and lastname for insert a user in the db
+        history.goBack();
+        toogleNavbar();
+    }
 
     const toogleChangeDisplay = () => {
         setDisplay(d => !d);
@@ -151,11 +150,7 @@ function Home() {
 
             {/*the page for create a new establishment*/}
             <Route path="/addPOI"
-                render={() =>
-                    <>
-                        <CreationForm/>
-                    </>
-                }
+                component={CreationForm}
             />
 
             {/*the route for the details of each establishment (/location/id) */}
