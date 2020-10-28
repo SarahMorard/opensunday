@@ -13,6 +13,7 @@ import Modifications from "./Modifications/Modifications";
 import CreationForm from "./Forms/CreationForm"
 import Request from "../utils/request"
 import endpoints from "../endpoints.json"
+import {Marker, Popup} from "react-leaflet";
 
 //a function for render all the route and use the history
 function RoutingComponent() {
@@ -33,6 +34,27 @@ function RoutingComponent() {
     const [userDB, setUser] = useState(null);
 
     let history = useHistory();
+
+    // POIs
+    const [pois, setPois] = useState(null);
+
+
+    //Fetch all the establishments that are stored in the db
+    useEffect(() => {
+        async function fetchEstablishments() {
+
+            let listOfEstablishment = await Request(
+                `${process.env.REACT_APP_SERVER_URL}${endpoints.establishments}`,
+                getAccessTokenSilently,
+                loginWithRedirect
+            );
+            setPois(listOfEstablishment);
+        }
+
+        fetchEstablishments();
+    }, []);
+
+
 
     useEffect(() => {
 
@@ -88,7 +110,7 @@ function RoutingComponent() {
     //change the navbarVisible
     let toogleNavbar = () => {
         setNavbarVisible(visible => {
-           return !visible;
+            return !visible;
         });
     }
 
@@ -123,61 +145,85 @@ function RoutingComponent() {
 
             {/*the welcome page with the navbar and the map*/}
             <Route path="/"
-                exact
-                render={() =>
-                    <>
-                   <MyMap toogleChangeDisplay={toogleChangeDisplay}/>
-                   </>
-                }
+                   exact
+                   render={() =>
+                       <>
+                           {pois != null && pois && pois.length > 0 &&
+                               <>
+                                   <MyMap toogleChangeDisplay={toogleChangeDisplay} poi = {[]} />
+                               </>
+                           }
+                       </>
+                   }
             />
 
             {/*the register page with the form*/}
             <Route path="/register"
-                render={() =>
-                    <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={onsubmit}
-                    >
-                        {formik => {
-                            return (<Form className="registerForm">
-                                    <h2>Welcome {userName}, please enter your infos to finish your register</h2>
-                                    <br/> <br/>
-                                    <FormikControl control="input" type="text" label="Firstname :" name="firstname"/>
-                                    <br/>
-                                    <FormikControl control="input" type="text" label="Lastname :" name="lastname"/>
-                                    <br/>
-                                    <button type="submit">Submit</button>
-                                </Form>
-                            )}
-                        }
-                    </Formik>}
+                   render={() =>
+                       <Formik
+                           initialValues={initialValues}
+                           validationSchema={validationSchema}
+                           onSubmit={onsubmit}
+                       >
+                           {formik => {
+                               return (<Form className="registerForm">
+                                       <h2>Welcome {userName}, please enter your infos to finish your register</h2>
+                                       <br/> <br/>
+                                       <FormikControl control="input" type="text" label="Firstname :" name="firstname"/>
+                                       <br/>
+                                       <FormikControl control="input" type="text" label="Lastname :" name="lastname"/>
+                                       <br/>
+                                       <button type="submit">Submit</button>
+                                   </Form>
+                               )}
+                           }
+                       </Formik>}
             />
 
             {/*The page with all the modifications done by some users (for the admins)*/}
             <Route path="/modif"
-                render={() =>
-                    <>
-                        <Modifications/>
-                    </>
-                }
+                   render={() =>
+                       <>
+                           <Modifications/>
+                       </>
+                   }
             />
 
             {/*the page for create a new establishment*/}
             <Route path="/addPOI"
-                component={CreationForm}
+                   component={CreationForm}
             />
 
+
             {/*the route for the details of each establishment (/location/id) */}
+            <Route path="/location/:eid"
+                   render={() =>
+                            <>
+                           {pois != null && pois && pois.length > 0 &&
+                           <>
+                               <InfosEstablishment display={display} poi={pois}/>
+                           </>
+                           }
+                           </>
+
+                   }
+            />
+
+
+            {/*the route for the details of each establishment (/location) */}
             <Route path="/location"
                    render={() =>
                        <>
-
-                           <InfosEstablishment display={display}/>
-                           <MyMap/>
+                           {pois != null && pois && pois.length > 0 &&
+                           <>
+                               <MyMap toogleChangeDisplay={toogleChangeDisplay} poi={pois} />
+                           </>
+                           }
                        </>
+
                    }
             />
+
         </UserContext.Provider>
     );
 
