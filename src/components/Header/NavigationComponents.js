@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState, useContext} from "react";
 import "./NavStyle.css";
 import {useAuth0} from "@auth0/auth0-react";
 import request from "../../utils/request";
@@ -13,30 +13,22 @@ function NavBars() {
     // Reference for the navigation bar "sideNav"
     let [nav, setNavRef] = useState(false);
 
-    //A boolean state for know when display the admin stuff
-    let [administrator, setAdmin] = useState(false);
 
     //Some React Router components
     let history = useHistory();
     let location = useLocation();
 
+    let context = useContext(UserContext);
+
+    let administrator = true;
     //All the Auth0 methods needed
     let {
         loading,
         loginWithRedirect,
         logout,
         getAccessTokenSilently,
-        isAuthenticated,
-        user
+        isAuthenticated
     } = useAuth0();
-
-    //effect triggered when a new user is logged for know if it's an admin or not
-    useEffect(() => {
-        if(UserContext){
-            //change if the user is an admin with the context (context not finished yet)
-            setAdmin(true);
-        }
-    },[user])
 
     //if we are on the map, set the toolbox open or close (conditional rendering in the return)
     let toogleRef = (e) => {
@@ -47,6 +39,8 @@ function NavBars() {
             });
         }
     }
+
+    console.log(context)
 
     //the login method for login with github
     let handleLocationsClick = async (e) => {
@@ -117,7 +111,7 @@ function NavBars() {
                     </a>
                 )}
                 {/*if an admin is logged, show the button for see the modifications / to come again in the map*/}
-                {administrator ? (
+                {context.user !== null && context.user.isAdmin ? (
                     location.pathname === "/" ?
                         <a className="App-link" href="#" onClick={onclickModifications}>Modifications List</a>
                     :

@@ -1,3 +1,19 @@
 ul {
     background-color: white;
 }
+
+.list {
+    border: black 2px solid;
+    margin: 3px;
+    padding-left: 5px;
+    border-radius: 7px;
+}
+
+.banButton {
+    margin-left: 30px;
+    margin-right: 5px;
+}
+
+.bold {
+    font-weight: bold;
+}

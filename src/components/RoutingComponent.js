@@ -29,6 +29,9 @@ function RoutingComponent() {
     //set if the navbar is render or not
     const [navbarVisible, setNavbarVisible] = useState(true);
 
+    //the user logged in (for set the context)
+    const [userDB, setUser] = useState(null);
+
     let history = useHistory();
 
     useEffect(() => {
@@ -36,23 +39,19 @@ function RoutingComponent() {
         // fetch user from DB
         async function fetchUserFromDB() {
 
-            const userTest = await Request(
+            let dbUser = await Request(
                 `${process.env.REACT_APP_SERVER_URL}${endpoints.users}` + "/" + user.sub,
                 getAccessTokenSilently,
                 loginWithRedirect
             );
-            /*const userTest = {
-                firstname: "Nicolas",
-                lastname: "Constantin",
-                admin: true,
-                ban: false
-            };*/
-            //const userTest = null;
-            let dbUser = userTest;
 
             if(dbUser.status === 404) {
                 dbUser = null;
             }
+
+            setUser(dbUser);
+            console.log(userDB);
+            console.log(dbUser);
 
             //is the user already in our db if yes, connect if not go in the register page
             if (dbUser !== null) {
@@ -118,7 +117,7 @@ function RoutingComponent() {
     }
 
     return (
-        <>
+        <UserContext.Provider value={{user : userDB}}>
             {/*render the navbar*/}
             {navbarVisible ? <NavBars/> : null}
 
@@ -179,7 +178,7 @@ function RoutingComponent() {
                        </>
                    }
             />
-        </>
+        </UserContext.Provider>
     );
 
 }
