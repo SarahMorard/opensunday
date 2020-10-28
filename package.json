@@ -9,6 +9,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "beauty-stars": "^1.1.0",
+    "copy-to-clipboard": "^3.3.1",
     "date-fns": "^2.16.1",
     "date-holidays": "^1.7.1",
     "formic": "^0.0.10",

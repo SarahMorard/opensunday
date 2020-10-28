@@ -149,9 +149,7 @@ function RoutingComponent() {
                    render={() =>
                        <>
                            {pois != null && pois && pois.length > 0 &&
-                               <>
                                    <MyMap toogleChangeDisplay={toogleChangeDisplay} poi = {[]} />
-                               </>
                            }
                        </>
                    }
