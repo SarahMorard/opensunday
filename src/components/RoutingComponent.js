@@ -14,12 +14,9 @@ import CreationForm from "./Forms/CreationForm"
 import Request from "../utils/request"
 import endpoints from "../endpoints.json"
 import {Marker, Popup} from "react-leaflet";
-import {DateContext} from "../Context/DateContext"
 
 //a function for render all the route and use the history
 function RoutingComponent() {
-
-
 
     //All the Auth0 methods needed
     const {user, logout, getAccessTokenSilently, loginWithRedirect} = useAuth0();
@@ -36,15 +33,10 @@ function RoutingComponent() {
     //the user logged in (for set the context)
     const [userDB, setUser] = useState(null);
 
-    // the date which is selected
-    const [date, setDate] = useState(null);
-
     let history = useHistory();
 
     // POIs
-    /* Pois for the establishments */
-    const [EstablishmentsPois, setEstablishemntsPois] = useState(null);
-
+    const [pois, setPois] = useState(null);
 
 
     //Fetch all the establishments that are stored in the db
@@ -56,13 +48,11 @@ function RoutingComponent() {
                 getAccessTokenSilently,
                 loginWithRedirect
             );
-            setEstablishemntsPois(listOfEstablishment);
+            setPois(listOfEstablishment);
         }
-        //prevent an autologin at the start of the app
-        if(user) {
-            fetchEstablishments();
-        }
-    }, [user]);
+
+        fetchEstablishments();
+    }, []);
 
 
 
@@ -82,11 +72,13 @@ function RoutingComponent() {
             }
 
             setUser(dbUser);
+            console.log(userDB);
+            console.log(dbUser);
 
             //is the user already in our db if yes, connect if not go in the register page
             if (dbUser !== null) {
                 //is the user ban ? if yes, don't let him to connect
-                if(dbUser.isBanned){
+                if(dbUser.ban){
                     alert("You are ban");
                     logout({returnTo: window.location.origin});
                 } else {
@@ -146,10 +138,8 @@ function RoutingComponent() {
         setDisplay(d => !d);
     }
 
-
     return (
         <UserContext.Provider value={{user : userDB}}>
-            <DateContext.Provider value={{date : date, setDate: setDate}}>
             {/*render the navbar*/}
             {navbarVisible ? <NavBars/> : null}
 
@@ -158,7 +148,7 @@ function RoutingComponent() {
                    exact
                    render={() =>
                        <>
-                                   <MyMap toogleChangeDisplay={toogleChangeDisplay} poi = {[]} />
+                                   <MyMap toogleChangeDisplay={toogleChangeDisplay} ePoi = {[]} />
                        </>
                    }
             />
@@ -205,9 +195,9 @@ function RoutingComponent() {
             <Route path="/location/:eid"
                    render={() =>
                             <>
-                           {EstablishmentsPois != null && EstablishmentsPois && EstablishmentsPois.length > 0 &&
+                           {pois != null && pois && pois.length > 0 &&
                            <>
-                               <InfosEstablishment display={display} ePoi={EstablishmentsPois}/>
+                               <InfosEstablishment display={display} ePoi={pois}/>
                            </>
                            }
                            </>
@@ -220,16 +210,15 @@ function RoutingComponent() {
             <Route path="/location"
                    render={() =>
                        <>
-                           {EstablishmentsPois != null && EstablishmentsPois && EstablishmentsPois.length > 0 &&
+                           {pois != null && pois && pois.length > 0 &&
                            <>
-                               <MyMap toogleChangeDisplay={toogleChangeDisplay} ePoi={EstablishmentsPois}/>
+                               <MyMap toogleChangeDisplay={toogleChangeDisplay} ePoi={pois} />
                            </>
                            }
                        </>
 
                    }
             />
-            </DateContext.Provider>
 
         </UserContext.Provider>
     );

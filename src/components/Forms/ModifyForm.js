@@ -30,8 +30,9 @@ function ModifyForm(props) {
 
     const [selectedDay, setDays] = useReducer(dayReducer, props.Closed);
 
-    const [lat, setLat] = useState(props.Lat);
-    const [long, setLong] = useState(props.Lng);
+    const [lat, setLat] = useState(props.lat);
+    const [long, setLong] = useState(props.lng);
+    console.log(props);
 
     /* Const to keep track of the position of the user */
     const watch = true;
@@ -75,13 +76,13 @@ function ModifyForm(props) {
     ]; //29 options...
 
     const initialValues = {
-        name: props.Name,
-        type: props.IdType,
-        description: props.Description,
-        address: props.Address,
-        npa: props.IdCity,
-        city: props.City,
-        website: props.WebSite,
+        name: props.name,
+        type: props.idType,
+        description: props.description,
+        address: props.address,
+        npa: props.idCity,
+        city: props.city,
+        website: props.webSite,
     };
 
     const validationSchema = Yup.object({

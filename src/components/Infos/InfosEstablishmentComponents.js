@@ -201,7 +201,7 @@ function InfosEstablishment(props) {
                         </div>
 
                         <h3>Web Site:</h3>
-                        <a href={"https://www.technopole.ch/"}>{poi.webSite}</a><br/>
+                        <a href={"https://www.technopole.ch/"} target="_blank">{poi.webSite}</a><br/>
                         <CopyToClipboard
                             text={window.location.href}
                             onCopy={handleCopy}
