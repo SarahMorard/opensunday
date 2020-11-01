@@ -10,6 +10,7 @@ import {useHistory, useLocation} from "react-router-dom";
 
 //the function for render and manage the navbar
 function NavBars() {
+
     // Reference for the navigation bar "sideNav"
     let [nav, setNavRef] = useState(false);
 
@@ -39,8 +40,6 @@ function NavBars() {
             });
         }
     }
-
-    console.log(context)
 
     //the login method for login with github
     let handleLocationsClick = async (e) => {
@@ -85,6 +84,7 @@ function NavBars() {
         history.push("/addPOI")
     }
 
+
     return (
         <div>
             <div className="topNavBar">
@@ -122,7 +122,10 @@ function NavBars() {
             {/*the content of the toolbox*/}
             <div id="toolbox" className="toolbox" style={{width: nav ? "20%" : 0}}>
                 <a href="#" className="btnClose" onClick={toogleRef}>&times;</a>
-                <MyCalendar/>
+
+                <MyCalendar
+                    history={history}
+                />
                 <a onClick={displayForm} href={"#"}>Create an establishment</a>
             </div>
         </div>

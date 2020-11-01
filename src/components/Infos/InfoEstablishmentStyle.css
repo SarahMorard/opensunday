@@ -43,20 +43,10 @@
     border-radius: 25px;
 }
 
-/* Style for the button favorits */
-.btnFav {
-    border-radius: 5px;
-    background-color: #282c34;
-    color: white;
-    font-weight: bold;
-    border: 2px solid cornflowerblue;
-    transition-duration: 0.4s;
-    padding: 2%;
-    margin-top: 2%;
-}
+
 
 /* Style for the button modify */
-.btnCopy {
+.infoEstablishment button {
     border-radius: 5px;
     background-color: #282c34;
     color: white;
@@ -69,15 +59,7 @@
 
 
 /* Style when the mouse goes over the button modify*/
-.btnCopy:hover {
-    background-color: cornflowerblue;
-    color: white;
-    cursor: pointer;
-
-}
-
-/* Style when the mouse goes over the button favourit*/
-.btnFav:hover {
+.infoEstablishment button:hover {
     background-color: cornflowerblue;
     color: white;
     cursor: pointer;
@@ -87,14 +69,17 @@
 
 /* Stars ratting */
 .stars {
-    padding-left: 33%;
+    margin-left: 34%;
+    width: 40%;
+    /* border: 3px solid #73AD21;*/
+    padding: 5px;
 }
 
-a {
+.infoEstablishment a {
     color: white;
     margin: 5px;
 }
 
-h3,h4,p {
+.infoEstablishment h3,h4,p {
    margin: 5px;
 }
