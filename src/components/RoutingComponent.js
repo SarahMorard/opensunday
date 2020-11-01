@@ -14,9 +14,12 @@ import CreationForm from "./Forms/CreationForm"
 import Request from "../utils/request"
 import endpoints from "../endpoints.json"
 import {Marker, Popup} from "react-leaflet";
+import {DateContext} from "../Context/DateContext"
 
 //a function for render all the route and use the history
 function RoutingComponent() {
+
+
 
     //All the Auth0 methods needed
     const {user, logout, getAccessTokenSilently, loginWithRedirect} = useAuth0();
@@ -33,10 +36,15 @@ function RoutingComponent() {
     //the user logged in (for set the context)
     const [userDB, setUser] = useState(null);
 
+    // the date which is selected
+    const [date, setDate] = useState(null);
+
     let history = useHistory();
 
     // POIs
-    const [pois, setPois] = useState(null);
+    /* Pois for the establishments */
+    const [EstablishmentsPois, setEstablishemntsPois] = useState(null);
+
 
 
     //Fetch all the establishments that are stored in the db
@@ -48,7 +56,7 @@ function RoutingComponent() {
                 getAccessTokenSilently,
                 loginWithRedirect
             );
-            setPois(listOfEstablishment);
+            setEstablishemntsPois(listOfEstablishment);
         }
         //prevent an autologin at the start of the app
         if(user) {
@@ -138,8 +146,10 @@ function RoutingComponent() {
         setDisplay(d => !d);
     }
 
+
     return (
         <UserContext.Provider value={{user : userDB}}>
+            <DateContext.Provider value={{date : date, setDate: setDate}}>
             {/*render the navbar*/}
             {navbarVisible ? <NavBars/> : null}
 
@@ -195,9 +205,9 @@ function RoutingComponent() {
             <Route path="/location/:eid"
                    render={() =>
                             <>
-                           {pois != null && pois && pois.length > 0 &&
+                           {EstablishmentsPois != null && EstablishmentsPois && EstablishmentsPois.length > 0 &&
                            <>
-                               <InfosEstablishment display={display} poi={pois}/>
+                               <InfosEstablishment display={display} ePoi={EstablishmentsPois}/>
                            </>
                            }
                            </>
@@ -210,15 +220,16 @@ function RoutingComponent() {
             <Route path="/location"
                    render={() =>
                        <>
-                           {pois != null && pois && pois.length > 0 &&
+                           {EstablishmentsPois != null && EstablishmentsPois && EstablishmentsPois.length > 0 &&
                            <>
-                               <MyMap toogleChangeDisplay={toogleChangeDisplay} poi={pois} />
+                               <MyMap toogleChangeDisplay={toogleChangeDisplay} ePoi={EstablishmentsPois}/>
                            </>
                            }
                        </>
 
                    }
             />
+            </DateContext.Provider>
 
         </UserContext.Provider>
     );
