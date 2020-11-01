@@ -1,4 +1,9 @@
-
+header {
+    position: fixed;
+    display: block;
+    width: 100%;
+    z-index: 10;
+}
 /* Style of the settings */
 .btnToolbox {
     position: absolute;
@@ -56,13 +61,11 @@ li a {
 /* Side navigation menu */
 .toolbox, .login {
     height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    z-index: 4; /* Stay on top */
     position: fixed; /* Stay in place */
     top: 0; /* Stay at the top */
     background-color: #111; /* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
+    overflow-x: hidden; /* invisible the content of the div when closed */
+    padding-top: 5%; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
@@ -76,10 +79,10 @@ li a {
 
 /* Header menu links */
 .toolbox a{
-    padding: 8px 8px 8px 32px;
+    padding: 1% 1% 1% 10%;
     text-decoration: none;
     font-size: 25px;
-    color: #818181;
+    color: #999;
     display: block;
     transition: 0.3s;
     cursor: pointer;
@@ -96,41 +99,14 @@ li a {
     position: absolute;
     top: 0;
     font-size: 36px;
-}
-
-/* Position and style the close button (top right corner) */
-.toolbox .btnClose {
     right: 25px;
 }
+
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
     .sideNav {padding-top: 15px;}
     .sideNav a {font-size: 18px;}
-}
-
-
-/* Search bar */
-.searchBar {
-    width: 80%;
-    height: 5%;
-}
-
-/* Search button */
-.btnSearch {
-    height: 5%;
-    border-radius: 10% 10%;
-    border-color: cornflowerblue;
-    background-color: white;
-    color: black;
-    font-weight: bold;
-    margin: 2%;
-}
-
-/* Style when the mouse goes over the search button */
-.btnSearch:hover {
-    background-color: cornflowerblue;
-    color: white;
 }
 
 /* Style for the calendar */
@@ -139,7 +115,7 @@ li a {
 }
 
 .label{
-    color: #ffffff;
+    color: #fff;
     display: block;
 }
 

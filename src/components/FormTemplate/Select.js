@@ -8,7 +8,7 @@ function Select (props) {
 
     return (
         <div className="form-control">
-            <label htmlFor={name}>{label}</label>
+            <label htmlFor={name} className="label">{label}</label>
             <Field as="select" id={name} name={name} {...rest}>
                 {
                     options.map(option => {
