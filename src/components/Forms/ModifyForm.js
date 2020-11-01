@@ -19,19 +19,19 @@ function dayReducer(state, action) {
         case "remove":
             const update = [...state];
             update.splice(update.indexOf(action.day, 1));
-                return update;
+            return update;
         default:
             return state;
     }
 }
 
 //The Creation form (not done yet)
-function CreationForm() {
+function ModifyForm(props) {
 
-    const [selectedDay, setDays] = useReducer(dayReducer, []);
+    const [selectedDay, setDays] = useReducer(dayReducer, props.Closed);
 
-    const [lat, setLat] = useState(null);
-    const [long, setLong] = useState(null);
+    const [lat, setLat] = useState(props.Lat);
+    const [long, setLong] = useState(props.Lng);
 
     /* Const to keep track of the position of the user */
     const watch = true;
@@ -75,13 +75,13 @@ function CreationForm() {
     ]; //29 options...
 
     const initialValues = {
-        name: "",
-        type: "",
-        description: "",
-        address: "",
-        npa: "",
-        city: "",
-        website: "",
+        name: props.Name,
+        type: props.IdType,
+        description: props.Description,
+        address: props.Address,
+        npa: props.IdCity,
+        city: props.City,
+        website: props.WebSite,
     };
 
     const validationSchema = Yup.object({
@@ -119,7 +119,7 @@ function CreationForm() {
 
     const submitMethod = (value) => {
         console.log(value);
-        //add an establishment
+        //modify an establishment
     }
 
     const handleClickMap = (e) => {
@@ -151,20 +151,20 @@ function CreationForm() {
                             selectedDays={selectedDay}
                         />
                         <div className="theMap">
-                        {longitude && latitude ?
-                            <Map center={[latitude, longitude]} zoom={14} onClick={handleClickMap}>
-                                <TileLayer
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>
+                            {longitude && latitude ?
+                                <Map center={[latitude, longitude]} zoom={14} onClick={handleClickMap}>
+                                    <TileLayer
+                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>
                             contributors'
-                                />
+                                    />
 
-                            </Map> : <div style={{color: "white", fontSize: 24}}>Getting geolocation...</div>
-                        }
+                                </Map> : <div style={{color: "white", fontSize: 24}}>Getting geolocation...</div>
+                            }
                         </div>
                         <p>Your latitude: {lat}</p>
                         <p>Your longitude: {long}</p>
-                        {lat!=null && long!=null ? <button type="submit">Submit</button> : null}
+                        <button type="submit">Modify</button>
                     </Form>
                 )
             }
@@ -173,4 +173,4 @@ function CreationForm() {
     )
 }
 
-export default CreationForm;
+export default ModifyForm;

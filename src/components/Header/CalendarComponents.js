@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import 'react-nice-dates/build/style.css'
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';

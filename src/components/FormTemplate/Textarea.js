@@ -8,8 +8,8 @@ function Textarea (props) {
 
     return (
         <div className="form-control">
-            <label htmlFor={name}>{label}</label>
-            <Field as="textarea" id={name} name={name} {...rest}/>
+            <label htmlFor={name} className="label">{label}</label>
+            <Field as="textarea" id={name} name={name} {...rest} className="field"/>
             <ErrorMessage name={name} component={TextError}/>
         </div>
     )

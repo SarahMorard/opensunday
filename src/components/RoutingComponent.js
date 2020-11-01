@@ -50,9 +50,11 @@ function RoutingComponent() {
             );
             setPois(listOfEstablishment);
         }
-
-        fetchEstablishments();
-    }, []);
+        //prevent an autologin at the start of the app
+        if(user) {
+            fetchEstablishments();
+        }
+    }, [user]);
 
 
 
@@ -72,13 +74,11 @@ function RoutingComponent() {
             }
 
             setUser(dbUser);
-            console.log(userDB);
-            console.log(dbUser);
 
             //is the user already in our db if yes, connect if not go in the register page
             if (dbUser !== null) {
                 //is the user ban ? if yes, don't let him to connect
-                if(dbUser.ban){
+                if(dbUser.isBanned){
                     alert("You are ban");
                     logout({returnTo: window.location.origin});
                 } else {
@@ -148,9 +148,7 @@ function RoutingComponent() {
                    exact
                    render={() =>
                        <>
-                           {pois != null && pois && pois.length > 0 &&
                                    <MyMap toogleChangeDisplay={toogleChangeDisplay} poi = {[]} />
-                           }
                        </>
                    }
             />
