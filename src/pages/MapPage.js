@@ -3,8 +3,9 @@ import {Map, MapLayer, Marker, Popup, TileLayer, withLeaflet} from "react-leafle
 import "./MapStyle.css"
 import { usePosition } from 'use-position';
 import { Route, useHistory } from "react-router-dom";
-import L from "leaflet";
 import {DateContext} from "../Context/DateContext";
+import L from 'leaflet';
+import 'react-leaflet-routing-machine';
 
 function MyMap (props) {
 
@@ -38,17 +39,16 @@ function MyMap (props) {
         history.push("/location/" + id );
     }
 
-    /*
-    const myRoute =
-        new L.Routing.control({
+/*
+    const myRoute = new L.control({
             waypoints: [
                 L.latLng(latitude, longitude),
                 L.latLng(46.2806238842186, 7.53847578)
             ],
             routeWhileDragging: true
         })
+*/
 
-     */
 
 
 
