@@ -14,6 +14,7 @@ import CreationForm from "./Forms/CreationForm"
 import Request from "../utils/request"
 import endpoints from "../endpoints.json"
 import {Marker, Popup} from "react-leaflet";
+import ModifyForm from "./Forms/ModifyForm";
 
 //a function for render all the route and use the history
 function RoutingComponent() {
@@ -33,11 +34,13 @@ function RoutingComponent() {
     //the user logged in (for set the context)
     const [userDB, setUser] = useState(null);
 
-    let history = useHistory();
-
     // POIs
     const [pois, setPois] = useState(null);
 
+    //The POI to modify
+    const [modifPOI, setModif] = useState(null);
+
+    let history = useHistory();
 
     //Fetch all the establishments that are stored in the db
     useEffect(() => {
@@ -51,8 +54,10 @@ function RoutingComponent() {
             setPois(listOfEstablishment);
         }
 
-        fetchEstablishments();
-    }, []);
+        if(user) {
+            fetchEstablishments();
+        }
+    }, [user]);
 
 
 
@@ -72,13 +77,11 @@ function RoutingComponent() {
             }
 
             setUser(dbUser);
-            console.log(userDB);
-            console.log(dbUser);
 
             //is the user already in our db if yes, connect if not go in the register page
             if (dbUser !== null) {
                 //is the user ban ? if yes, don't let him to connect
-                if(dbUser.ban){
+                if(dbUser.isBanned){
                     alert("You are ban");
                     logout({returnTo: window.location.origin});
                 } else {
@@ -197,7 +200,7 @@ function RoutingComponent() {
                             <>
                            {pois != null && pois && pois.length > 0 &&
                            <>
-                               <InfosEstablishment display={display} ePoi={pois}/>
+                               <InfosEstablishment display={display} ePoi={pois} modif={setModif}/>
                            </>
                            }
                            </>
@@ -217,6 +220,15 @@ function RoutingComponent() {
                            }
                        </>
 
+                   }
+            />
+
+            {/*the route for modify an establishment */}
+            <Route path="/modify"
+                   render = {() =>
+                    <>
+                        {modifPOI===null ? null : <ModifyForm data={modifPOI}/>}
+                    </>
                    }
             />
 

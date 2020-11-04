@@ -159,6 +159,10 @@ function InfosEstablishment(props) {
         )
     }
 
+    const modifyEstablishment = () => {
+        props.modif(poi);
+        history.push("/modify");
+    }
 
     return (
 
@@ -213,7 +217,8 @@ function InfosEstablishment(props) {
                         <button onClick={comfirmModif}>Confirm Changes</button>
                         <br/>
                         <button onClick={discardModif}>Discard Changes</button>
-
+                        <br/>
+                        <button onClick={modifyEstablishment}>Modify</button>
                     </div>
                 }
             </div>

@@ -4,7 +4,7 @@ import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import {DateContext} from "../../Context/DateContext";
 
-
+//The class which render the calendar
 class MyCalendar extends React.Component  {
     constructor(props) {
         super(props);

@@ -7,7 +7,7 @@ import FooterComponent from "./components/Footer/FooterComponent";
 
 function App() {
 
-    //the router with the RoutingComponent component(the home component have all the routes)
+    //the router with the RoutingComponent component with all the routes and the footer
     return (
         <Router>
             <div className="App">

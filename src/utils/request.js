@@ -1,3 +1,4 @@
+//the customized class for call the backend, with 2 optional
 export default async function (url, getAccessTokenSilently, loginWithRedirect, method="GET", dataToInsert=null) {
   try {
     let token = await getAccessTokenSilently();

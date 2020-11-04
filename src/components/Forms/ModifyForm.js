@@ -11,38 +11,46 @@ import 'react-day-picker/lib/style.css';
 import {usePosition} from "use-position";
 import {Map, TileLayer} from "react-leaflet";
 
-
+//this function will add or remove the given date from the list of date
 function dayReducer(state, action) {
     switch (action.type) {
         case "add":
             return [...state, action.day];
         case "remove":
             const update = [...state];
-            update.splice(update.indexOf(action.day, 1));
+            let dayToDeleteIndex = update.findIndex(d => d.getTime() === action.day.getTime());
+            update.splice(dayToDeleteIndex, 1);
             return update;
         default:
             return state;
     }
 }
 
-//The Creation form (not done yet)
+//The Modify form
 function ModifyForm(props) {
 
-    const [selectedDay, setDays] = useReducer(dayReducer, props.Closed);
+    //the data of the establishment to modify
+    const data = props.data;
+    console.log(data);
 
-    const [lat, setLat] = useState(props.lat);
-    const [long, setLong] = useState(props.lng);
-    console.log(props);
+    //this reducer is a state for manage lists.
+    const [selectedDay, setDays] = useReducer(dayReducer, data.closed);
 
-    /* Const to keep track of the position of the user */
+    //states for get back the latitude and the longitude
+    const [lat, setLat] = useState(data.lat);
+    const [long, setLong] = useState(data.lng);
+
+
+    // Const to keep track of the position of the user
     const watch = true;
 
-    /* Const for the position of the user */
+    // Const for the position of the user
     const {
         latitude,
         longitude
     } = usePosition(watch);
 
+    //the list of options available for the user to choose the type of establishment
     const TypesOptions = [
         {key: "Select an option", value: ""},
         {key: "Restaurant", value: "2"},
@@ -73,18 +81,20 @@ function ModifyForm(props) {
         {key: "Religious Place", value: "67"},
         {key: "Theme Park", value: "70"},
         {key: "Zoo", value: "71"},
-    ]; //29 options...
+    ];
 
+    //the initial values for formik
     const initialValues = {
-        name: props.name,
-        type: props.idType,
-        description: props.description,
-        address: props.address,
-        npa: props.idCity,
-        city: props.city,
-        website: props.webSite,
+        name: data.name,
+        type: data.idType,
+        description: data.description,
+        address: data.address,
+        npa: data.idCity,
+        city: data.city,
+        website: data.webSite,
     };
 
+    //the yup validation schema
     const validationSchema = Yup.object({
         name: Yup.string().required("Required"),
         type: Yup.string().required("Required"),
@@ -97,37 +107,40 @@ function ModifyForm(props) {
         long: Yup.number().required("Required")
     });
 
+    //the managment of the calendar
     const handleDayClick = (day) => {
         let isAlreadySelected = false;
 
+        //select if the day clicked by the user is already selected or not
         selectedDay.map((item, index) => {
-                //console.log(item + "   " + day);
-                if (item === day) {
+                if (item.getTime() === day.getTime()) {
                     isAlreadySelected = true;
-                    //console.log("coucou")
                 }
             }
         )
-        console.log(isAlreadySelected);
 
+        //if it's already selected, call the method remove, if it's not, call the add method
         if (!isAlreadySelected) {
             setDays({day, type: "add"});
         } else {
             setDays({day, type: "remove"});
         }
-        console.log(selectedDay)
+
     }
 
+    //The effect of the modify button
     const submitMethod = (value) => {
         console.log(value);
         //modify an establishment
     }
 
+    //set the value when the user click on the map
     const handleClickMap = (e) => {
         setLat(e.latlng.lat);
         setLong(e.latlng.lng);
     }
 
+    //the form
     return (
         <Formik
             initialValues={initialValues}
@@ -146,11 +159,15 @@ function ModifyForm(props) {
                         <FormikControl control="input" type="text" label="City" name="city"/>
                         <FormikControl control="input" type="text" label="Website" name="website"/>
                         <label className="label">Select the dates when the establishment is closed</label>
+
+                        {/*the calendar for select the day when the establishment is closed*/}
                         <DayPicker
                             className="calendarInForm"
                             onDayClick={handleDayClick}
                             selectedDays={selectedDay}
                         />
+
+                        {/*the map for select where is the establishment*/}
                         <div className="theMap">
                             {longitude && latitude ?
                                 <Map center={[latitude, longitude]} zoom={14} onClick={handleClickMap}>
@@ -165,6 +182,7 @@ function ModifyForm(props) {
                         </div>
                         <p>Your latitude: {lat}</p>
                         <p>Your longitude: {long}</p>
+
                         <button type="submit">Modify</button>
                     </Form>
                 )

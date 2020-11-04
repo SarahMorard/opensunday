@@ -21,73 +21,28 @@ function Modifications () {
     useEffect(() => {
 
         async function fetchModificationsFromDb () {
+
             //call the db for have the modifications (return a list of objects )
+            let listOfModifications = await Request(
+                `${process.env.REACT_APP_SERVER_URL}${endpoints.modifications}`,
+                getAccessTokenSilently,
+                loginWithRedirect
+            );
 
-            //temporary :
-            const modifTest1 = {
-                modifID: 1,
-                idUser: "github|48205420",
-                date: "18.10.2020",
-                idEstablishment: 1235852,
-                name: null,
-                idType: null,
-                description: null,
-                address: "Rue de la plaine 19",
-                idTown: null,
-                closed: null,
-                lat: null,
-                long: null,
-                website: "www.pinkfoodasia.ch",
-                validated: 3,
-            };
-            const modifTest2  = {
-                modifID: 2,
-                idUser: "github|48205420",
-                date: "19.10.2020",
-                idEstablishment: 1235852,
-                name: "Vache et moi",
-                idType: "restaurant",
-                description: null,
-                address: null,
-                idTown: null,
-                closed: null,
-                lat: null,
-                long: null,
-                website: null,
-                validated: 2,
-            };
-            const modifTest3  = {
-                modifID: 3,
-                idUser: "github|48205420",
-                date: "19.10.2020",
-                idEstablishment: 1235853,
-                name: "panne d'inspi",
-                idType: "restaurant",
-                description: "on test d'écrire des trucs longs et pas forcément avec beaucoup de sens parce qu'on test la longueur et le comportement du CSS",
-                address: "Rue d'on sais pas trop ou 3",
-                idTown: 123558,
-                closed: ["1.01.2020", "2.01.2020", "3.01.2020"],
-                lat: 46.569,
-                long: 9.355554,
-                website: "panne d'inspi.ch",
-                validated: 0
-            };
-            const modifList = [modifTest1, modifTest2, modifTest3];
-
-            await setModif(modifList);
+            //put the list in the state
+            await setModif(listOfModifications);
         }
-
         fetchModificationsFromDb();
     }, []);
 
-    //the effect of the ban button
+    //the effect of the ban button (ban a user)
     let banUser = async (props) => {
 
         const data = {
             id: props
         }
 
-        //call the db for ban "props"
+        //call the db for ban "props" (this will ban the user)
         await Request(
             `${process.env.REACT_APP_SERVER_URL}${endpoints.users}` + "/" + props,
             getAccessTokenSilently,
@@ -95,10 +50,11 @@ function Modifications () {
             "PUT",
             data
         );
-        alert("The user is ban");
+        //inform the admin that the user has been correctly banned
+        alert("The user has been banned");
     }
 
-    //return all the modifications made by the users
+    //return all the modifications made by the users, if it's null (the user didn't modify the attribute) we don't render it
     return (
         <ul className="myModifs">
             {modifs===null ? null : modifs.map((item, index) =>
@@ -118,6 +74,7 @@ function Modifications () {
                     {item.long ? <span>,<span className="bold"> long : </span>{item.long}</span> : null}
                     {item.website ? <span>,<span className="bold"> website : </span>{item.website}</span> : null}
                     <span>,<span className="bold"> validated : </span>{item.validated}</span>
+                    {/*The button for ban a user*/}
                     <button onClick={() => banUser(item.idUser)} className="banButton">Ban user {item.idUser}</button>
                 </li>
             )}

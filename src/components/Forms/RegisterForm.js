@@ -9,15 +9,19 @@ import toogleRegister from "../../App"
 //The register form
 function RegisterForm () {
 
+    //The initial value for formik
     const initialValues = {
         firstname: "",
         lastname: ""
     };
+
+    //The yup validation schema
     const validationSchema = Yup.object({
         firstname: Yup.string().required("Required"),
         lastname: Yup.string().required("Required")
     });
 
+    //The form
     return (
         <Formik
             initialValues={initialValues}

@@ -38,20 +38,6 @@ function MyMap (props) {
         history.push("/location/" + id );
     }
 
-    /*
-    const myRoute =
-        new L.Routing.control({
-            waypoints: [
-                L.latLng(latitude, longitude),
-                L.latLng(46.2806238842186, 7.53847578)
-            ],
-            routeWhileDragging: true
-        })
-
-     */
-
-
-
     // Set the day that was retrieved from the calendar when the user click on a day
     const setDay = () =>{
         selectedDay(props.day)

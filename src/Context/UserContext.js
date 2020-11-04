@@ -1,6 +1,6 @@
 import React from 'react';
 
-//one context not finished
+//the context for save the user logged in
 export const UserContext = React.createContext({
     user: null
 });

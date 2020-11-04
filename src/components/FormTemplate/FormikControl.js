@@ -2,8 +2,6 @@ import React from "react";
 import Input from "./Input";
 import Textarea from "./Textarea";
 import Select from "./Select";
-import RadioButton from "./RadioButton";
-import CheckboxGroup from "./CheckboxGroup";
 
 //The component Formik for select witch component is required
 function FormikControl (props) {
@@ -15,12 +13,6 @@ function FormikControl (props) {
             return <Textarea {...rest}/>
         case "select":
             return <Select {...rest}/>
-        case "radio":
-            return <RadioButton {...rest}/>
-        case "checkbox":
-            return <CheckboxGroup {...rest}/>
-        case "date":
-            break;
         default:
             return null;
     }

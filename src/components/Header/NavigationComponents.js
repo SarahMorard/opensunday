@@ -16,9 +16,9 @@ function NavBars() {
     let history = useHistory();
     let location = useLocation();
 
+    //the context
     let context = useContext(UserContext);
 
-    let administrator = true;
     //All the Auth0 methods needed
     let {
         loading,
@@ -28,9 +28,10 @@ function NavBars() {
         isAuthenticated
     } = useAuth0();
 
-    //if we are on the map, set the toolbox open or close (conditional rendering in the return)
+    //Set the toolbox open or close (conditional rendering in the return)
     let toogleRef = (e) => {
         e.preventDefault();
+
         setNavRef(value => {
             return !value;
         });
@@ -45,13 +46,12 @@ function NavBars() {
     //the logout method
     let handleLogoutClick = async (e) => {
         e.preventDefault();
-        /*
-        returnTo parameter is necessary because multiple
-        apps use the same authentication backend
-        */
+
+        //returnTo parameter is necessary because multiple apps use the same authentication backend
         logout({returnTo: window.location.origin});
     };
 
+    //return the loading component if it needs
     if (loading) {
         return <Loading/>;
     }
@@ -68,7 +68,7 @@ function NavBars() {
         history.push("/")
     }
 
-    //when click on the link, render the form for add an establishment (not finished yet)
+    //when click on the link, render the form for add an establishment
     let displayForm = (e) => {
         e.preventDefault();
         history.push("/addPOI")
@@ -79,6 +79,7 @@ function NavBars() {
         <header>
             <div className="topNavBar">
                 <a className="btnToolbox" onClick={toogleRef} href={"#"}>ToolBox </a>
+
                 {/*render the login button if no one is logged and the logout button if someone is connected*/}
                 {isAuthenticated ? (
                     <a
@@ -97,12 +98,13 @@ function NavBars() {
                         Login
                     </a>
                 )}
+
                 {/*if an admin is logged, show the button for see the modifications / to come again in the map*/}
                 {context.user !== null && context.user.isAdmin ? (
-                    location.pathname === "/" ?
-                        <a className="App-link" href="#" onClick={onclickModifications}>Modifications List</a>
-                        :
+                    location.pathname === "/modif" ?
                         <a className="App-link" href="#" onClick={onclickMap}>Return to map</a>
+                        :
+                        <a className="App-link" href="#" onClick={onclickModifications}>Modifications List</a>
                 ) : null}
             </div>
 
