@@ -1,10 +1,12 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState, useRef} from "react";
 import {Map, MapLayer, Marker, Popup, TileLayer, withLeaflet} from "react-leaflet";
 import "./MapStyle.css"
 import { usePosition } from 'use-position';
 import { Route, useHistory } from "react-router-dom";
-import L from "leaflet";
 import {DateContext} from "../Context/DateContext";
+import L from 'leaflet';
+import 'react-leaflet-routing-machine';
+import Routing from "./Routing";
 
 function MyMap (props) {
 
@@ -32,11 +34,20 @@ function MyMap (props) {
         error,
     } = usePosition(watch);
 
+    const [mapInit, setMapInit] = useState(false)
+
+    const mapRef = useRef();
+
+    useEffect(()=> {
+        setMapInit(true);
+    }, [mapRef])
+
     //go to the URL of one establishment and render the infos for it
     let callPathMap = async (id) => {
         /* Call backend with id, return all infos of establishment -> stock in a variable*/
         history.push("/location/" + id );
     }
+
 
     // Set the day that was retrieved from the calendar when the user click on a day
     const setDay = () =>{
@@ -136,6 +147,9 @@ function MyMap (props) {
                     {OpenEstablishmentLocation}
 
                     {setDay}
+
+                    <Routing map={mapRef.current} />
+
 
 
                 </Map> : <div>Getting geolocation...</div>

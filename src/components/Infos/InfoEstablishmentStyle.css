@@ -11,6 +11,7 @@
     color: white;
     border-radius: 25px 25px;
     z-index: 3;
+    padding-top: 3.5%;
 
 
 }
@@ -29,8 +30,8 @@
 /* Position and style the close button (top left corner) */
 .infoEstablishment .infosClosebtn {
     position: absolute;
-    top: 0;
-    left: 0%;
+    top: 7%;
+    left: -4%;
     font-size: 36px;
     margin-left: 50px;
     color: white;

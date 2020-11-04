@@ -70,26 +70,31 @@ function InfosEstablishment(props) {
         idEstablishment: 2,
         name: null,
         description: "ok",
-        address: "ok"
+        address: "ok",
+        website: null
     }
     const M2 = {
         idEstablishment: 3,
         name: "ok",
         description: null,
-        address: "ok"
+        address: "ok",
+        website: null
+
     }
     const M3 = {
         idEstablishment: 4,
-        name: "ok",
+        name: null,
         description: null,
-        address: null
+        address: null,
+        website: null
+
     }
 
     /* Modiy the state of the modification to get the modification that was
    *  done on the establishment that we clicked
    * */
     useEffect(() => {
-        setModificationsPois(M1)
+        setModificationsPois(M3)
     }, [eid])
 
 
@@ -159,71 +164,82 @@ function InfosEstablishment(props) {
         )
     }
 
-    const modifyEstablishment = () => {
-        props.modif(poi);
-        history.push("/modify");
-    }
 
     return (
 
-            <div className="infoEstablishment" style={{width: props.display ? '20%' : '0%'}}>
-                <a href="javascript:void(0)" className="infosClosebtn" onClick={() => history.push("/location")}>&times;</a>
-                <img className="image" src="https://www.technopole.ch/data/images/galeries/ciel/IMG_1341.JPG"/>
-                {poi != null &&
-                    <div className="infosContainer">
-                        {ModificationsPois.name != null ?
-                            <h3 style={{color: "red"}}>{poi.name}</h3> :
-                            <h3>{poi.name}</h3>
+        <div className="infoEstablishment" style={{width: props.display ? '20%' : '0%'}}>
+            <a href="javascript:void(0)" className="infosClosebtn" onClick={() => history.push("/location")}>&times;</a>
+            <img className="image" src="https://www.technopole.ch/data/images/galeries/ciel/IMG_1341.JPG"/>
+            {poi != null &&
+                <div className="infosContainer">
+                    {ModificationsPois.name != null ?
+                        <h3 style={{color: "red"}}>{poi.name}</h3> :
+                        <h3>{poi.name}</h3>
 
-                        }
+                    }
 
-                        {ModificationsPois.description != null ?
-                            <h3 style={{color: "red"}}>{poi.description}</h3> :
-                            <h3>{poi.description}</h3>
+                    {ModificationsPois.description != null ?
+                        <h3 style={{color: "red"}}>{poi.description}</h3> :
+                        <h3>{poi.description}</h3>
 
-                        }
+                    }
 
-                        {ModificationsPois.address != null ?
-                            <h3 style={{color: "red"}}>{poi.address}</h3> :
-                            <h3>{poi.address}</h3>
+                    {ModificationsPois.address != null ?
+                        <h3 style={{color: "red"}}>{poi.address}</h3> :
+                        <h3>{poi.address}</h3>
 
-                        }
+                    }
 
-
-
-                        <div className="stars">
-                            <ReactStars
-                                count={5}
-                                onChange={handleRatingChange}
-                                size={25}
-                                isHalf={false}
-                                emptyIcon={<i className="far fa-star"></i>}
-                                halfIcon={<i className="fa fa-star-half-alt"></i>}
-                                fullIcon={<i className="fa fa-star"></i>}
-                                activeColor="#ffd700"
-                            />
-                        </div>
-
-                        <h3>Web Site:</h3>
-                        <a href={"https://www.technopole.ch/"} target="_blank">{poi.webSite}</a><br/>
-                        <CopyToClipboard
-                            text={window.location.href}
-                            onCopy={handleCopy}
-                        >
-                            <button >Copy Link</button>
-                        </CopyToClipboard>
-
-                        <br/>
-                        <button onClick={comfirmModif}>Confirm Changes</button>
-                        <br/>
-                        <button onClick={discardModif}>Discard Changes</button>
-                        <br/>
-                        <button onClick={modifyEstablishment}>Modify</button>
+                    <div className="stars">
+                        <ReactStars
+                            count={5}
+                            onChange={handleRatingChange}
+                            size={25}
+                            isHalf={false}
+                            emptyIcon={<i className="far fa-star"></i>}
+                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                            fullIcon={<i className="fa fa-star"></i>}
+                            activeColor="#ffd700"
+                        />
                     </div>
-                }
-            </div>
-            );
 
+                    <h3>Web Site:</h3>
+                    {ModificationsPois.website != null ?
+                        <a href={"https://www.technopole.ch/"} target="_blank" style={{color: "red"}}>{poi.webSite}</a>:
+                        <a href={"https://www.technopole.ch/"} target="_blank">{poi.webSite}</a>
+                    }
+                    <br/>
+                    <CopyToClipboard
+                        text={window.location.href}
+                        onCopy={handleCopy}
+                    >
+                        <button >Copy Link</button>
+                    </CopyToClipboard>
+
+                    <br/>
+                    {ModificationsPois.name != null
+                    || ModificationsPois.description != null
+                    || ModificationsPois.address != null
+                    || ModificationsPois.website != null ?
+                        <button onClick={discardModif}>Discard Changes</button>:
+                        <p></p>
+                    }
+
+                    {ModificationsPois.name != null
+                    || ModificationsPois.description != null
+                    || ModificationsPois.address != null
+                    || ModificationsPois.website != null ?
+                        <button onClick={comfirmModif}>Confirm Changes</button>:
+                        <p></p>
+                    }
+
+
+
+                </div>
             }
+        </div>
+        );
 
-            export default InfosEstablishment;
+    }
+
+    export default InfosEstablishment;
