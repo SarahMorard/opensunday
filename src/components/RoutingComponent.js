@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import "./RoutingComponent.css";
 import {useAuth0} from "@auth0/auth0-react";
 import {Route, useHistory} from "react-router-dom";
@@ -13,7 +13,6 @@ import Modifications from "./Modifications/Modifications";
 import CreationForm from "./Forms/CreationForm"
 import Request from "../utils/request"
 import endpoints from "../endpoints.json"
-import {Marker, Popup} from "react-leaflet";
 
 //a function for render all the route and use the history
 function RoutingComponent() {
@@ -50,9 +49,10 @@ function RoutingComponent() {
             );
             setPois(listOfEstablishment);
         }
-
-        fetchEstablishments();
-    }, []);
+        if(user){
+            fetchEstablishments();
+        }
+    }, [user]);
 
 
 
@@ -148,7 +148,7 @@ function RoutingComponent() {
                    exact
                    render={() =>
                        <>
-                                   <MyMap toogleChangeDisplay={toogleChangeDisplay} ePoi = {[]} />
+                           <MyMap toogleChangeDisplay={toogleChangeDisplay} ePoi = {[]} />
                        </>
                    }
             />
