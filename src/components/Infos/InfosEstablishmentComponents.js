@@ -8,26 +8,30 @@ import endpoints from "../../endpoints.json";
 import {UserContext} from "../../Context/UserContext";
 import {useAuth0} from "@auth0/auth0-react";
 
+
 //render the div with the infos of one selected establishment
 function InfosEstablishment(props) {
 
+
     //All the Auth0 methods needed
     const {getAccessTokenSilently, loginWithRedirect} = useAuth0();
-
-    /* State of the stares for the establishment evaluation */
-    let [stares, setStares] = useState(0);
-
     /* Constext for the user */
     let context = useContext(UserContext);
 
+    /* State of the stares for the establishment evaluation */
+    let [stares, setStares] = useState(null);
 
     /* State for the current establishment according to the id of the url*/
     const [poi, setPoi] = useState(null);
 
-
     /* State for the text that can be copied with the copy button (sharing link of website) */
     const [copied, isCopied] = useState(false);
 
+    /* State for the modifiation that could have been done on one establishment */
+    const [ModificationsPois, setModificationsPois] = useState(null);
+
+    /* State of the user for the rating of establishment */
+    const [userVoted, setUserVoted] = useState(false);
 
     /* Get the parameter given at the end of the path */
     const {eid} = useParams();
@@ -35,24 +39,38 @@ function InfosEstablishment(props) {
     /* useHistory const */
     const history = useHistory();
 
-    const [ModificationsPois, setModificationsPois] = useState(null);
 
-
-
+    /** USEEFFECTS **/
     /* Modify the state of the infos for the establishment according it's id
-     *  The backend method will return one establishment based on the id
-     * */
+     * The backend method will return one establishment based on the id
+     */
     useEffect(() => {
-        let rightPoi = props.ePoi.find(poi => poi.id === +eid);
+        let rightPoi = props.ePoi.find(poi => poi.establishmentId === +eid);
         setPoi(rightPoi);
+
     }, [eid])
 
 
+    /* Method POST to rate one establishment (send idUser, idEstablishment, the rating) */
     /*
+    useEffect(() => {
+        async function fetchUserVoted() {
+            let verifUserVoted = await Request(
+                `${process.env.REACT_APP_SERVER_URL}${endpoints.rating}` + "/" + context.user.githubId + "/" + eid,
+                getAccessTokenSilently,
+                loginWithRedirect
+            );
+            setUserVoted(verifUserVoted);
+        }
+        fetchUserVoted();
+    },[poi])
+
+     */
+
+
     //Fetch all the right modification according to the id of the establishment
     useEffect(() => {
         async function fetchModif() {
-
             let modif = await Request(
                 `${process.env.REACT_APP_SERVER_URL}${endpoints.modifications}` + "/" + eid,
                 getAccessTokenSilently,
@@ -60,72 +78,43 @@ function InfosEstablishment(props) {
             );
             setModificationsPois(modif);
         }
-
+        console.log("MODIFICATIONS: " + ModificationsPois)
         fetchModif();
     }, eid);
-
-    */
-
-    const M1 = {
-        idEstablishment: 2,
-        name: null,
-        description: "ok",
-        address: "ok",
-        website: null
-    }
-    const M2 = {
-        idEstablishment: 3,
-        name: "ok",
-        description: null,
-        address: "ok",
-        website: null
-
-    }
-    const M3 = {
-        idEstablishment: 4,
-        name: null,
-        description: null,
-        address: null,
-        website: null
-
-    }
-
-    /* Modiy the state of the modification to get the modification that was
-   *  done on the establishment that we clicked
-   * */
-    useEffect(() => {
-        setModificationsPois(M3)
-    }, [eid])
-
-
-    /* Method to set the state of the copied value to copy the link of the website */
-    const handleCopy = () => {
-        isCopied(true);
-    }
 
 
     /* Method POST to rate one establishment (send idUser, idEstablishment, the rating) */
     const rateEstablishment = async() => {
-        const data = {
-            githubID: context.user,
-            establishmentID: poi.id,
-            rating: stares
-        };
 
-        await Request(
-            `${process.env.REACT_APP_SERVER_URL}${endpoints.establishments}`,
-            getAccessTokenSilently,
-            loginWithRedirect,
-            "POST",
-            data
-        );
+        // If the user has note voted we had a vote
+        console.log("USERVOTED : " + userVoted)
+
+        if (userVoted == false) {
+            const data =
+                {
+                    establishment: poi,
+                    user: context.user,
+                    grade: stares
+                };
+
+            await Request(
+                `${process.env.REACT_APP_SERVER_URL}${endpoints.rating}`,
+                getAccessTokenSilently,
+                loginWithRedirect,
+                "POST",
+                data
+            )
+        } else {
+            alert("You have already voted for this establishment!")
+        }
     }
 
+    /** MODIFICATION METHODS **/
     //Method POST to confirm the modifications of one establishment
-    const comfirmModif = async(values) => {
+    const comfirmModif = async() => {
         //call the db with id establsihment and to insert the modification in the establishment table
         const data = {
-            modifId: ModificationsPois.id,
+            modifId: ModificationsPois.establishmentId,
             validated: 1
         };
 
@@ -142,7 +131,7 @@ function InfosEstablishment(props) {
     const discardModif = async () => {
         const data = {
             //Delete the modifications in the table Modification according to the id of the establishment
-            modifId: ModificationsPois.id,
+            modifId: ModificationsPois.establishmentId,
             validated: -1
         };
 
@@ -156,41 +145,48 @@ function InfosEstablishment(props) {
     }
 
 
+    /** HANDLING METHODS **/
     /* Rate the establishment and call the method to update the rating of the establishment */
     const handleRatingChange = (newRating) => {
         setStares(newRating);
-        return (
-            rateEstablishment
-        )
+    }
+
+
+    /* Method to set the state of the copied value to copy the link of the website */
+    const handleCopy = () => {
+        isCopied(true);
+    }
+
+    const modifyEstablishment = () => {
+        props.modif(poi);
+        history.push("/modify");
     }
 
 
     return (
-
         <div className="infoEstablishment" style={{width: props.display ? '20%' : '0%'}}>
             <a href="javascript:void(0)" className="infosClosebtn" onClick={() => history.push("/location")}>&times;</a>
-            <img className="image" src="https://www.technopole.ch/data/images/galeries/ciel/IMG_1341.JPG"/>
             {poi != null &&
-                <div className="infosContainer">
-                    {ModificationsPois.name != null ?
-                        <h3 style={{color: "red"}}>{poi.name}</h3> :
-                        <h3>{poi.name}</h3>
+            <div className="infosContainer">
+                {ModificationsPois.name != null ?
+                    <h3 style={{color: "red"}}>{ModificationsPois.name}</h3>
+                    :
+                    <h3>{poi.name}</h3>
+                }
 
-                    }
+                {ModificationsPois.description != null ?
+                    <h3 style={{color:"red"}}>{ModificationsPois.description}</h3>
+                    :
+                    <h3>{poi.description}</h3>
+                }
 
-                    {ModificationsPois.description != null ?
-                        <h3 style={{color: "red"}}>{poi.description}</h3> :
-                        <h3>{poi.description}</h3>
+                {ModificationsPois.address != null ?
+                    <h3 style={{color:"red"}}>{ModificationsPois.address}</h3>
+                    :
+                    <h3>{poi.address}</h3>
+                }
 
-                    }
-
-                    {ModificationsPois.address != null ?
-                        <h3 style={{color: "red"}}>{poi.address}</h3> :
-                        <h3>{poi.address}</h3>
-
-                    }
-
-                    <div className="stars">
+                 <div className="stars">
                         <ReactStars
                             count={5}
                             onChange={handleRatingChange}
@@ -203,43 +199,35 @@ function InfosEstablishment(props) {
                         />
                     </div>
 
-                    <h3>Web Site:</h3>
-                    {ModificationsPois.website != null ?
-                        <a href={"https://www.technopole.ch/"} target="_blank" style={{color: "red"}}>{poi.webSite}</a>:
-                        <a href={"https://www.technopole.ch/"} target="_blank">{poi.webSite}</a>
-                    }
+                <h3>Web Site:</h3>
+                {ModificationsPois.website != null ?
+                    <a href={"https://www.technopole.ch/"} target="_blank">{ModificationsPois.webSite}</a>
+                    :
+                    <a href={"https://www.technopole.ch/"} target="_blank" style={{color: "red"}}>{poi.webSite}</a>
+                }
                     <br/>
+                <div className="btnInfoContainer">
                     <CopyToClipboard
                         text={window.location.href}
                         onCopy={handleCopy}
                     >
-                        <button >Copy Link</button>
+                        <button>Copy Link</button>
                     </CopyToClipboard>
 
-                    <br/>
-                    {ModificationsPois.name != null
-                    || ModificationsPois.description != null
-                    || ModificationsPois.address != null
-                    || ModificationsPois.website != null ?
-                        <button onClick={discardModif}>Discard Changes</button>:
-                        <p></p>
-                    }
 
-                    {ModificationsPois.name != null
-                    || ModificationsPois.description != null
-                    || ModificationsPois.address != null
-                    || ModificationsPois.website != null ?
-                        <button onClick={comfirmModif}>Confirm Changes</button>:
-                        <p></p>
-                    }
-
-
-
+                        <button onClick={rateEstablishment}>Send rating</button>
+                        <button onClick={discardModif}>Discard Changes</button>
+                        <button onClick={comfirmModif}>Confirm Changes</button>
+                        <button onClick={modifyEstablishment}>Modify</button>
+                    </div>
                 </div>
             }
+
         </div>
         );
 
     }
 
-    export default InfosEstablishment;
+
+
+export default InfosEstablishment;

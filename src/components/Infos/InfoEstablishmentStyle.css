@@ -12,8 +12,11 @@
     border-radius: 25px 25px;
     z-index: 3;
     padding-top: 3.5%;
-
-
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
@@ -24,7 +27,8 @@
 
 /* Padding of the card's container */
 .infosContainer {
-    padding: 2px 10px;
+    padding: 20% 10px;
+    align-content: center;
 }
 
 /* Position and style the close button (top left corner) */
@@ -56,6 +60,14 @@
     transition-duration: 0.4s;
     padding: 2%;
     margin-top: 2%;
+    vertical-align: middle;
+
+}
+
+.btnInfoContainer{
+
+
+
 }
 
 
@@ -78,7 +90,6 @@
 
 .infoEstablishment a {
     color: white;
-    margin: 5px;
 }
 
 .infoEstablishment h3,h4,p {

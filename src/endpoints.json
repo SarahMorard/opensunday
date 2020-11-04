@@ -1,5 +1,8 @@
 {
   "users": "/api/users",
   "establishments": "/api/Establishments",
-  "modifications": "/api/Modifications"
+  "modifications": "/api/modifications",
+  "rating": "/api/evaluations",
+  "userVoted": "api/getUserAlreadyVoted"
+
 }

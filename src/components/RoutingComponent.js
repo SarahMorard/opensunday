@@ -53,8 +53,7 @@ function RoutingComponent() {
             );
             setPois(listOfEstablishment);
         }
-
-        if(user) {
+        if(user){
             fetchEstablishments();
         }
     }, [user]);
@@ -77,11 +76,13 @@ function RoutingComponent() {
             }
 
             setUser(dbUser);
+            console.log(userDB);
+            console.log(dbUser);
 
             //is the user already in our db if yes, connect if not go in the register page
             if (dbUser !== null) {
                 //is the user ban ? if yes, don't let him to connect
-                if(dbUser.isBanned){
+                if(dbUser.ban){
                     alert("You are ban");
                     logout({returnTo: window.location.origin});
                 } else {
@@ -151,7 +152,7 @@ function RoutingComponent() {
                    exact
                    render={() =>
                        <>
-                                   <MyMap toogleChangeDisplay={toogleChangeDisplay} ePoi = {[]} />
+                           <MyMap toogleChangeDisplay={toogleChangeDisplay} ePoi = {[]} />
                        </>
                    }
             />
@@ -200,7 +201,7 @@ function RoutingComponent() {
                             <>
                            {pois != null && pois && pois.length > 0 &&
                            <>
-                               <InfosEstablishment display={display} ePoi={pois} modif={setModif}/>
+                               <InfosEstablishment display={display} ePoi={pois}/>
                            </>
                            }
                            </>

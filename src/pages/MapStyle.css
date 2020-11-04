@@ -4,6 +4,17 @@
     z-index: 2;
 }
 
+.leaflet-routing-container {
+    width: 250px;
+    overflow-y: scroll;
+    height:400px;
+    background-color: #999999;
+}
+
+.leaflet-routing-container h2{
+    color: black;
+}
+
 .Map {
     position: relative;
     height: 100%;
