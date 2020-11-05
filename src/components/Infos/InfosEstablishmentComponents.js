@@ -12,7 +12,6 @@ import {useAuth0} from "@auth0/auth0-react";
 //render the div with the infos of one selected establishment
 function InfosEstablishment(props) {
 
-
     //All the Auth0 methods needed
     const {getAccessTokenSilently, loginWithRedirect} = useAuth0();
     /* Constext for the user */
@@ -24,7 +23,9 @@ function InfosEstablishment(props) {
     /* State for the current establishment according to the id of the url*/
     const [poi, setPoi] = useState(null);
 
+    /* Initial state of modification for one establishment */
     const modifInitial = {
+        id: null,
         name: null,
         website: null,
         deleted: false,
@@ -35,11 +36,16 @@ function InfosEstablishment(props) {
     /* State for set all the modifications in one */
     const [modification, setModification] = useState(modifInitial);
 
+    /* State for get all the id of the modifications */
+    const [idModif, setIdModif] = useState([]);
+
     /* State for the text that can be copied with the copy button (sharing link of website) */
     const [copied, isCopied] = useState(false);
 
     /* State of the user for the rating of establishment */
     const [userVoted, setUserVoted] = useState(false);
+
+    const [evaluation, setEvaluation] = useState(0);
 
     /* Get the parameter given at the end of the path */
     const {eid} = useParams();
@@ -60,7 +66,6 @@ function InfosEstablishment(props) {
 
 
     /* Method POST to rate one establishment (send idUser, idEstablishment, the rating) */
-
     useEffect(() => {
         async function fetchUserVoted() {
             try {
@@ -87,9 +92,8 @@ function InfosEstablishment(props) {
                 getAccessTokenSilently,
                 loginWithRedirect
             );
-            await console.log("MOD: " + modifications)
 
-
+            let finalID = [];
             let finalModif = {};
             for (let modification of modifications) {
                 if (modification.name !== null) {
@@ -109,174 +113,218 @@ function InfosEstablishment(props) {
                 if (modification.deleted !== null) {
                     finalModif.deleted = modification.deleted
                 }
+
+                finalID.push(modification.id);
+
             }
 
+            setIdModif(finalID);
             setModification(finalModif);
 
 
         }
+
         fetchModif();
-    },[eid]);
+    }, [eid]);
 
 
-/* Method POST to rate one establishment (send idUser, idEstablishment, the rating) */
-const rateEstablishment = async () => {
+    /* Method to get the rating of one establishment */
+    useEffect(() => {
+        async function fetchEstablishmentEvaluation() {
+            let getEvaluation = await Request(
+                `${process.env.REACT_APP_SERVER_URL}${endpoints.grade}` + "/" + eid,
+                getAccessTokenSilently,
+                loginWithRedirect
+            );
+            setEvaluation(getEvaluation);
+        }
+        fetchEstablishmentEvaluation();
+    }, [eid])
 
-    // If the user has note voted we had a vote
-    console.log("USERVOTED : " + userVoted)
 
-    if (userVoted == false) {
-        const data =
-            {
-                establishment: poi,
-                user: context.user,
-                grade: stares
-            };
+    /* Method POST to rate one establishment (send idUser, idEstablishment, the rating) */
+    const rateEstablishment = async () => {
 
-        await Request(
-            `${process.env.REACT_APP_SERVER_URL}${endpoints.rating}`,
-            getAccessTokenSilently,
-            loginWithRedirect,
-            "POST",
-            data
-        )
-    } else {
-        alert("You have already voted for this establishment!")
+        // If the user has note voted we had a vote
+        console.log("USERVOTED : " + userVoted)
+
+        if (userVoted == false) {
+            const data =
+                {
+                    establishment: poi,
+                    user: context.user,
+                    grade: stares
+                };
+
+            await Request(
+                `${process.env.REACT_APP_SERVER_URL}${endpoints.rating}`,
+                getAccessTokenSilently,
+                loginWithRedirect,
+                "POST",
+                data
+            )
+        } else {
+            alert("You have already voted for this establishment!")
+        }
     }
-}
 
-/** MODIFICATION METHODS **/
-    //Method POST to confirm the modifications of one establishment
-const comfirmModif = async () => {
-        //call the db with id establsihment and to insert the modification in the establishment table
-        const data = {
-            modifId: poi.establishmentId,
-            validated: 1
-        };
+    /** MODIFICATION METHODS **/
+    //Method PUT to confirm all the modifications for one establishment
+    const comfirmModifs = () => {
+        idModif.map((modifId, index) => {
+            confirmModif(modifId);
+        })
 
+    }
+
+    //Method PUT
+    const confirmModif = async (props) => {
         await Request(
-            `${process.env.REACT_APP_SERVER_URL}${endpoints.modifications}`,
+            `${process.env.REACT_APP_SERVER_URL}${endpoints.modifications}` + "/" + props + "/1",
             getAccessTokenSilently,
             loginWithRedirect,
-            "PUT",
-            data
+            "PUT"
         );
     }
 
-//Method to discard the modifications of one establishment
-const discardModif = async () => {
-    const data = {
-        //Delete the modifications in the table Modification according to the id of the establishment
-        modifId: poi.establishmentId,
-        validated: -1
-    };
+    //Method to discard all the modifications for one establishment
+    const discardModifs = () => {
+        idModif.map((modifId, index) => {
+            discardModif(modifId);
+        })
+    }
 
-    await Request(
-        `${process.env.REACT_APP_SERVER_URL}${endpoints.modifications}`,
-        getAccessTokenSilently,
-        loginWithRedirect,
-        "PUT",
-        data
-    );
-}
-
-
-/** HANDLING METHODS **/
-/* Rate the establishment and call the method to update the rating of the establishment */
-const handleRatingChange = (newRating) => {
-    setStares(newRating);
-}
+    //Method PUT
+    const discardModif = async (props) => {
+        await Request(
+            `${process.env.REACT_APP_SERVER_URL}${endpoints.modifications}` + "/" + props + "/-1",
+            getAccessTokenSilently,
+            loginWithRedirect,
+            "PUT"
+        );
+    }
 
 
-/* Method to set the state of the copied value to copy the link of the website */
-const handleCopy = () => {
-    isCopied(true);
-}
-
-const modifyEstablishment = () => {
-    history.push("/modify");
-}
-
-const deleteEstablishment = () => {
-    //Delete establishment
-}
+    /** HANDLING METHODS **/
+    /* Rate the establishment and call the method to update the rating of the establishment */
+    const handleRatingChange = (newRating) => {
+        setStares(newRating);
+    }
 
 
-return (
-    <div className="infoEstablishment" style={{width: props.display ? '20%' : '0%'}}>
-        <a href="javascript:void(0)" className="infosClosebtn" onClick={() => history.push("/location")}>&times;</a>
-        {poi != null &&
-        <div className="infosContainer">
+    /* Method to set the state of the copied value to copy the link of the website */
+    const handleCopy = () => {
+        isCopied(true);
+    }
 
-            {modification.name != null ?
-                <h3 style={{color: "red"}}>{modification.name}</h3>
-                :
-                <h3>{poi.name}</h3>
-            }
+    const modifyEstablishment = () => {
+        history.push("/modify");
+    }
 
-            {modification.description != null ?
-                <h3 style={{color: "red"}}>{modification.description}</h3>
-                :
-                <h3>{poi.description}</h3>
-
-            }
+    const deleteEstablishment = () => {
+        //Delete establishment
+    }
 
 
-            {modification.address != null ?
-                <h3 style={{color: "red"}}>{modification.address}</h3>
-                :
-                <h3>{poi.address}</h3>
+    return (
+        <div className="infoEstablishment" style={{width: props.display ? '20%' : '0%'}}>
+            <a href="javascript:void(0)" className="infosClosebtn" onClick={() => history.push("/location")}>&times;</a>
+            {poi != null &&
+            <div className="infosContainer">
 
-            }
+                {modification.name != null ?
+                    <h3 style={{color: "red"}}>{modification.name}</h3>
+                    :
+                    <h3>{poi.name}</h3>
+                }
 
-            <div className="stars">
-                <ReactStars
-                    count={5}
-                    onChange={handleRatingChange}
-                    size={25}
-                    isHalf={false}
-                    emptyIcon={<i className="far fa-star"></i>}
-                    halfIcon={<i className="fa fa-star-half-alt"></i>}
-                    fullIcon={<i className="fa fa-star"></i>}
-                    activeColor="#ffd700"
-                />
+                {modification.description != null ?
+                    <h3 style={{color: "red"}}>{modification.description}</h3>
+                    :
+                    <h3>{poi.description}</h3>
+
+                }
+
+
+                {modification.address != null ?
+                    <h3 style={{color: "red"}}>{modification.address}</h3>
+                    :
+                    <h3>{poi.address}</h3>
+
+                }
+
+                <p>Evaluation: </p>
+                {evaluation !== 0 ?
+                    <div className="stars">
+                        <ReactStars
+                            count={evaluation}
+                            size={25}
+                            isHalf={false}
+                            color={"#f1c200"}
+                        />
+                    </div>
+                    :
+                    null
+                }
+
+
+                <h3>Web Site:</h3>
+                {modification.website != null ?
+                    <a href={"https://www.technopole.ch/"} target="_blank"
+                       style={{color: "red"}}>{modification.webSite}</a>
+                    :
+                    <a href={"https://www.technopole.ch/"} target="_blank">{poi.webSite}</a>
+                }
+
+                {modification.deleted != false ?
+                    null
+                    :
+                    <p style={{color: "red"}}>The establishment does not exist anymore</p>
+                }
+
+                <div className="stars">
+                    <ReactStars
+                        count={5}
+                        onChange={handleRatingChange}
+                        size={25}
+                        isHalf={false}
+                        emptyIcon={<i className="far fa-star"></i>}
+                        halfIcon={<i className="fa fa-star-half-alt"></i>}
+                        fullIcon={<i className="fa fa-star"></i>}
+                        activeColor="#ffd700"
+                    />
+                </div>
+
+                <br/>
+                <div className="btnInfoContainer">
+                    <CopyToClipboard
+                        text={window.location.href}
+                        onCopy={handleCopy}
+                    >
+                        <button>Copy Link</button>
+                    </CopyToClipboard>
+
+
+                    <button onClick={rateEstablishment}>Send rating</button>
+
+                    {idModif.length == 0 ? null :
+                        <>
+                        <button onClick={discardModifs}>Discard Changes</button>
+
+                        <button onClick={comfirmModifs}>Confirm Changes</button>
+                        </>
+                    }
+
+
+                    <button onClick={modifyEstablishment}>Modify</button>
+                    <button onClick={deleteEstablishment}>Delete</button>
+
+                </div>
             </div>
-
-            <h3>Web Site:</h3>
-            {modification.website != null ?
-                <a href={"https://www.technopole.ch/"} target="_blank" style={{color: "red"}}>{modification.webSite}</a>
-                :
-                <a href={"https://www.technopole.ch/"} target="_blank">{poi.webSite}</a>
             }
 
-            {modification.deleted != false ?
-                <p style={{color: "red"}}>The establishment does not exist anymore</p>
-                :
-                null
-            }
-
-            <br/>
-            <div className="btnInfoContainer">
-                <CopyToClipboard
-                    text={window.location.href}
-                    onCopy={handleCopy}
-                >
-                    <button>Copy Link</button>
-                </CopyToClipboard>
-
-
-                <button onClick={rateEstablishment}>Send rating</button>
-                <button onClick={discardModif}>Discard Changes</button>
-                <button onClick={comfirmModif}>Confirm Changes</button>
-                <button onClick={modifyEstablishment}>Modify</button>
-                <button onClick={deleteEstablishment}>Delete</button>
-
-            </div>
         </div>
-        }
-
-    </div>
-);
+    );
 
 }
 
