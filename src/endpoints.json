@@ -3,6 +3,6 @@
   "establishments": "/api/Establishments",
   "modifications": "/api/modifications",
   "rating": "/api/evaluations",
-  "userVoted": "api/getUserAlreadyVoted"
+  "userVoted": "/api/getUserAlreadyVoted"
 
 }
