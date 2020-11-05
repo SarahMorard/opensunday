@@ -92,26 +92,27 @@ function InfosEstablishment(props) {
                 getAccessTokenSilently,
                 loginWithRedirect
             );
-
             let finalID = [];
             let finalModif = {};
             for (let modification of modifications) {
                 if (modification.name !== null) {
                     finalModif.name = modification.name;
                 }
+
                 if (modification.description !== null) {
-                    finalModif.description = modification.description
+                    finalModif.description = modification.description;
                 }
+
                 if (modification.address !== null) {
-                    finalModif.address = modification.address
+                    finalModif.address = modification.address;
                 }
 
                 if (modification.website !== null) {
-                    finalModif.website = modification.website
+                    finalModif.website = modification.website;
                 }
 
                 if (modification.deleted !== null) {
-                    finalModif.deleted = modification.deleted
+                    finalModif.deleted = modification.deleted;
                 }
 
                 finalID.push(modification.id);
@@ -275,6 +276,10 @@ const modifyEstablishment = () => {
                     <h3>{poi.name}</h3>
                 }
 
+                <p>Type :</p>
+                    <h3>{poi.type.typeOfEstablishment}</h3>
+
+                <p>Description :</p>
                 {modification.description != null ?
                     <h3 style={{color: "red"}}>{modification.description}</h3>
                     :
