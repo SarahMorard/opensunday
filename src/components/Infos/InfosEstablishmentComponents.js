@@ -226,6 +226,8 @@ const modifyEstablishment = () => {
         //Delete establishment
     }
 
+    /* Method to get the sponsorization of one establishment */
+
 
     return (
         <div className="infoEstablishment" style={{width: props.display ? '20%' : '0%'}}>
@@ -255,17 +257,12 @@ const modifyEstablishment = () => {
                 }
 
                 <p>Evaluation: </p>
-                {evaluation !== 0 ?
-                    <div className="stars">
-                        <ReactStars
-                            count={evaluation}
-                            size={25}
-                            isHalf={false}
-                            color={"#f1c200"}
-                        />
-                    </div>
+
+                {evaluation == "NaN" ?
+                    <p>No rating for now</p>
                     :
-                    null
+                    <p>{evaluation}</p>
+
                 }
 
 
@@ -277,7 +274,7 @@ const modifyEstablishment = () => {
                     <a href={"https://www.technopole.ch/"} target="_blank">{poi.webSite}</a>
                 }
 
-                {modification.deleted != false ?
+                {modification.deleted != true ?
                     null
                     :
                     <p style={{color: "red"}}>The establishment does not exist anymore</p>
