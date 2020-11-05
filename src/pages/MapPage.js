@@ -89,21 +89,76 @@ function MyMap (props) {
         shadowSize: [41, 41]
     });
 
+    /* Customer pointer icon with the color Red */
+    const pointerIconYellow = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
 
     /* Return Markers for each location around the user
     *  When the establishment is open the marker is blue
     *  When the establishment is red the marker is red
-    *  When it's not really defined the marker is orange
+    *  When th establishment is sponsorized the marker is orange
     * */
     const OpenEstablishmentLocation  = (
         props.ePoi.map((value, index) => {
+            // Normal open establishments
+            if (value.isSponsorized != true) {
                 return (
                     <Marker
                         key={index} position={[value.lat, value.lng]}
                         onClick={() => callPathMap(value.establishmentId)}
+
                     >
                     </Marker>
                 )
+            }else {
+                //Sponsorized establishments
+                return (
+                    <Marker
+                        key={index} position={[value.lat, value.lng]}
+                        onClick={() => callPathMap(value.establishmentId)}
+                        icon={pointerIconYellow}
+                    >
+                    </Marker>
+                )
+            }
+        })
+    )
+
+
+    /* Const to diplays the closed establishement they are displayed with a red pointer */
+    const CloseEstablishmentLocation  = (
+        props.ePoi.map((value, index) => {
+            if (value.isOpen != date) {
+                return (
+                    <Marker
+                        key={index} position={[value.lat, value.lng]}
+                        onClick={() => callPathMap(value.establishmentId)}
+                        icon={pointerIconRed}
+                    >
+                    </Marker>
+                )
+            }
+        })
+    )
+
+    /* Const to diplays the sponsorized establishement they are displayed in red */
+    const SponsorizedEstablishmentLocation  = (
+        props.ePoi.map((value, index) => {
+            return (
+                <Marker
+                    key={index} position={[value.lat, value.lng]}
+                    onClick={() => callPathMap(value.establishmentId)}
+                    icon={pointerIconYellow}
+                >
+                </Marker>
+            )
         })
     )
 
