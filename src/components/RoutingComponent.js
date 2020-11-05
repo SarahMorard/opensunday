@@ -76,19 +76,15 @@ function RoutingComponent() {
             }
 
             setUser(dbUser);
-            console.log(userDB);
-            console.log(dbUser);
 
             //is the user already in our db if yes, connect if not go in the register page
             if (dbUser !== null) {
                 //is the user ban ? if yes, don't let him to connect
-                if(dbUser.ban){
+                console.log(dbUser);
+                if(dbUser.isBanned){
                     alert("You are ban");
                     logout({returnTo: window.location.origin});
-                } else {
-                    //set the context with the user infos!
                 }
-
             } else {
                 toogleNavbar();
                 history.push('/register')
@@ -116,6 +112,7 @@ function RoutingComponent() {
         setNavbarVisible(visible => {
             return !visible;
         });
+
     }
 
     //when someone register, put him in the db and go back in the home

@@ -170,8 +170,6 @@ function ModifyForm(props) {
             modificationDates: []
         }
 
-        console.log(JSON.stringify(dataToInsert));
-
         //check if something change in the modification
         let isChanges = false;
         if(dataToInsert.name !== null)

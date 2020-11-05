@@ -222,8 +222,42 @@ const modifyEstablishment = () => {
     history.push("/modify");
 }
 
-    const deleteEstablishment = () => {
+    const deleteEstablishment = async () => {
         //Delete establishment
+        //creation of the data
+        const dataToInsert = {
+            name: null,
+            description: null,
+            address: null,
+            webSite: null,
+            lat: poi.lat,
+            lng: poi.lng,
+            deleted: true,
+            establishment: {
+                establishmentId: poi.establishmentId
+            },
+            city: {
+                postalCode: poi.city.postalCode,
+                name: poi.city.name
+            },
+            type: {
+                id: poi.type.id
+            },
+            user: {
+                GithubId: context.user.githubId
+            },
+            //date format don't match from frontend to backend (frontend is strings and backend are VisualStudio dates objects)
+            modificationDates: []
+        }
+
+        await Request(
+            `${process.env.REACT_APP_SERVER_URL}${endpoints.modifications}`,
+            getAccessTokenSilently,
+            loginWithRedirect,
+            "POST",
+            dataToInsert
+        );
+        console.log(poi);
     }
 
     /* Method to get the sponsorization of one establishment */
