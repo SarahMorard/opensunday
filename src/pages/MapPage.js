@@ -1,17 +1,13 @@
 import React, {useContext, useEffect, useState, useRef} from "react";
-import {Map, MapLayer, Marker, Popup, TileLayer, withLeaflet} from "react-leaflet";
+import {Map, Marker, TileLayer} from "react-leaflet";
 import "./MapStyle.css"
 import { usePosition } from 'use-position';
-import { Route, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {DateContext} from "../Context/DateContext";
 import L from 'leaflet';
 import Routing from "./Routing";
 
 function MyMap (props) {
-
-
-    /* State for the day that was  clicked on the calendar*/
-    const [day, selectedDay] = useState(undefined);
 
     /* Use history to push the paths */
     let history = useHistory();
@@ -34,10 +30,7 @@ function MyMap (props) {
     /* Const for the position of the user */
     const {
         latitude,
-        longitude,
-        timestamp,
-        accuracy,
-        error,
+        longitude
     } = usePosition(watch);
 
     const mapRef = useRef();
@@ -60,13 +53,6 @@ function MyMap (props) {
         let myRoute = props.ePoi.find(e => e.establishmentId === id);
         setLatLng([myRoute.lat, myRoute.lng]);
     }
-
-
-    // Set the day that was retrieved from the calendar when the user click on a day
-    const setDay = () =>{
-        selectedDay(props.day)
-    }
-
 
     /* Customer pointer icon with the color Green */
     const pointerIconGreen = new L.Icon({
@@ -108,14 +94,13 @@ function MyMap (props) {
     const OpenEstablishmentLocation  = (
         props.ePoi.map((value, index) => {
             // Normal open establishments
-            if (value.isSponsorized != true) {
+            if (value.isSponsorized !== true) {
                 return (
                     <Marker
                         key={index} position={[value.lat, value.lng]}
                         onClick={() => callPathMap(value.establishmentId)}
 
-                    >
-                    </Marker>
+                    />
                 )
             }else {
                 //Sponsorized establishments
@@ -124,8 +109,7 @@ function MyMap (props) {
                         key={index} position={[value.lat, value.lng]}
                         onClick={() => callPathMap(value.establishmentId)}
                         icon={pointerIconYellow}
-                    >
-                    </Marker>
+                    />
                 )
             }
         })
@@ -133,53 +117,29 @@ function MyMap (props) {
 
 
     /* Const to diplays the closed establishement they are displayed with a red pointer */
+    /* Normally, we should receive a list of string from the server, but the dates in the server are in
+    * VisualStudio Date format, so it's not possible to match it with our calendar. We let this method
+    * if someone want to continue the project and correct the backend*/
     const CloseEstablishmentLocation  = (
         props.ePoi.map((value, index) => {
-            if (value.isOpen != date) {
+            if (value.isOpen !== date) {
                 return (
                     <Marker
                         key={index} position={[value.lat, value.lng]}
                         onClick={() => callPathMap(value.establishmentId)}
                         icon={pointerIconRed}
-                    >
-                    </Marker>
+                    />
                 )
             }
         })
     )
-
-    /* Const to diplays the sponsorized establishement they are displayed in red */
-    const SponsorizedEstablishmentLocation  = (
-        props.ePoi.map((value, index) => {
-            return (
-                <Marker
-                    key={index} position={[value.lat, value.lng]}
-                    onClick={() => callPathMap(value.establishmentId)}
-                    icon={pointerIconYellow}
-                >
-                </Marker>
-            )
-        })
-    )
-
 
     //Position of the user
     const userPosition = (
         <Marker
             position={[latitude,longitude]}
             icon={pointerIconGreen}
-        >
-            <Popup>
-                <code>
-                    Your current position is:<br/>
-                    latitude: {latitude}<br/>
-                    longitude: {longitude}<br/>
-                    timestamp: {timestamp}<br/>
-                    accuracy: {accuracy && `${accuracy}m`}<br/>
-                    error: {error}<br/>
-                </code>
-            </Popup>
-        </Marker>
+        />
     );
 
 
@@ -202,9 +162,6 @@ function MyMap (props) {
 
                     {OpenEstablishmentLocation}
 
-                    {setDay}
-
-
                     {mapRef.current && eLatLng &&
                         <Routing
                             map={mapRef.current}
@@ -218,7 +175,7 @@ function MyMap (props) {
         </div>
     );
 
-};
+}
 
 
 export default MyMap;

@@ -24,7 +24,6 @@ function NavBars() {
         loading,
         loginWithRedirect,
         logout,
-        getAccessTokenSilently,
         isAuthenticated
     } = useAuth0();
 
@@ -109,7 +108,7 @@ function NavBars() {
 
                 {/*If we are in a form create or modify, we want to go back to the home*/}
                 {location.pathname === "/addPOI" || location.pathname === "/modify" ?
-                    <a className="App-link" href="#" onClick={() => history.push("/")}>Return to map</a>
+                    <a className="App-link" onClick={() => history.push("/")}>Return to map</a>
                     :
                     null
                 }

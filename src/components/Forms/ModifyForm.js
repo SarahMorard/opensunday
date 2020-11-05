@@ -146,10 +146,10 @@ function ModifyForm(props) {
 
         //creation of the data
         const dataToInsert = {
-            name: value.name !== data.name ? value.name : null,
-            description: value.description !== data.description ? value.description : null,
-            address: value.address !== data.address ? value.address : null,
-            webSite: value.website !== data.webSite ? value.website : null,
+            name: value.name,
+            description: value.description,
+            address: value.address,
+            webSite: value.website,
             lat: lat,
             lng: long,
             deleted: false,
@@ -191,8 +191,6 @@ function ModifyForm(props) {
         if(dataToInsert.type.id !== null)
             isChanges = true;
 
-        console.log(isChanges);
-
         //sent the POST request
         if(isChanges){
             setModifDone(false);
@@ -203,7 +201,6 @@ function ModifyForm(props) {
                 "POST",
                 dataToInsert
             );
-            console.log(`${process.env.REACT_APP_SERVER_URL}${endpoints.modifications}`);
         } else {
             setModifDone(true);
         }
@@ -225,7 +222,7 @@ function ModifyForm(props) {
         >
             {formik => {
                 return (<Form className="background">
-                        <h2>Create an establishment</h2>
+                        <h2>Modify an establishment</h2>
                         <FormikControl control="input" type="text" label="Name" name="name"/>
                         <FormikControl control="select" label="Type of establishment" name="type"
                                        options={TypesOptions}/>

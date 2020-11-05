@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from "react";
+import React, {useEffect, useState} from "react";
 import "./Modifications.css";
 import Request from "../../utils/request";
 import endpoints from "../../endpoints.json";
@@ -31,7 +31,6 @@ function Modifications () {
 
             //put the list in the state
             await setModif(listOfModifications);
-            console.log(listOfModifications);
         }
         fetchModificationsFromDb();
     }, []);
@@ -62,7 +61,9 @@ function Modifications () {
                 <li key={item.id} className="list" style={{backgroundColor: item.validated >= 3 ? "rgba(0,255,0,0.2)" : item.validated < 1 ? "rgba(255,0,0,0.2)" : "white"}}>
                     <span><span className="bold">idUser : </span>{item.user.githubId}</span>
                     <span>,<span className="bold"> date : </span>{item.date.yearMonthDate}</span>
-                    <span>,<span className="bold"> idEstablishment : </span>{item.establishment.establishmentId}</span>
+                    {item.establishment ? <span>,<span className="bold"> idEstablishment : </span>{item.establishment.establishmentId}</span>
+                        :
+                        <span>,<span className="bold"> Establishment deleted</span></span>}
                     {item.name ? <span>,<span className="bold"> name : </span>{item.name}</span> : null}
                     {item.type.id ? <span>,<span className="bold"> idType : </span>{item.type.id}</span> : null}
                     {item.description ? <span>,<span className="bold"> description : </span>{item.description}</span> : null}

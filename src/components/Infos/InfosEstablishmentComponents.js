@@ -107,8 +107,8 @@ function InfosEstablishment(props) {
                     finalModif.address = modification.address;
                 }
 
-                if (modification.website !== null) {
-                    finalModif.website = modification.website;
+                if (modification.webSite !== null) {
+                    finalModif.website = modification.webSite;
                 }
 
                 if (modification.deleted !== null) {
@@ -149,7 +149,7 @@ function InfosEstablishment(props) {
         // If the user has note voted we had a vote
         console.log("USERVOTED : " + userVoted)
 
-        if (userVoted == false) {
+        if (userVoted === false) {
             const data =
                 {
                     establishment: poi,
@@ -258,7 +258,6 @@ const modifyEstablishment = () => {
             "POST",
             dataToInsert
         );
-        console.log(poi);
     }
 
     /* Method to get the sponsorization of one establishment */
@@ -306,14 +305,16 @@ const modifyEstablishment = () => {
 
 
                 <h3>Web Site:</h3>
+                {console.log(modification)}
                 {modification.website != null ?
-                    <a href={"https://www.technopole.ch/"} target="_blank"
-                       style={{color: "red"}}>{modification.webSite}</a>
+                    <a href={"https://"+modification.website+"/"} target="_blank"
+                       style={{color: "red"}}>{modification.website}</a>
                     :
-                    <a href={"https://www.technopole.ch/"} target="_blank">{poi.webSite}</a>
+                    <a href={"https://"+poi.webSite+"/"} target="_blank">{poi.webSite}</a>
                 }
 
-                {modification.deleted != true ?
+
+                {modification.deleted !== true ?
                     null
                     :
                     <p style={{color: "red"}}>The establishment does not exist anymore</p>
@@ -325,9 +326,9 @@ const modifyEstablishment = () => {
                         onChange={handleRatingChange}
                         size={25}
                         isHalf={false}
-                        emptyIcon={<i className="far fa-star"></i>}
-                        halfIcon={<i className="fa fa-star-half-alt"></i>}
-                        fullIcon={<i className="fa fa-star"></i>}
+                        emptyIcon={<i className="far fa-star"/>}
+                        halfIcon={<i className="fa fa-star-half-alt"/>}
+                        fullIcon={<i className="fa fa-star"/>}
                         activeColor="#ffd700"
                     />
                 </div>
@@ -344,7 +345,7 @@ const modifyEstablishment = () => {
 
                     <button onClick={rateEstablishment}>Send rating</button>
 
-                    {idModif.length == 0 ? null :
+                    {idModif.length === 0 ? null :
                         <>
                         <button onClick={discardModifs}>Discard Changes</button>
 

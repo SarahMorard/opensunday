@@ -13,7 +13,6 @@ import Modifications from "./Modifications/Modifications";
 import CreationForm from "./Forms/CreationForm"
 import Request from "../utils/request"
 import endpoints from "../endpoints.json"
-import {Marker, Popup} from "react-leaflet";
 import ModifyForm from "./Forms/ModifyForm";
 
 //a function for render all the route and use the history
@@ -24,9 +23,6 @@ function RoutingComponent() {
 
     //take the username of github for the welcome message
     const [userName, setUsername] = useState(null);
-
-    //the state for the InfoEstablishment
-    const [display, setDisplay] = useState(true);
 
     //set if the navbar is render or not
     const [navbarVisible, setNavbarVisible] = useState(true);
@@ -59,7 +55,7 @@ function RoutingComponent() {
     }, [user]);
 
 
-
+    //The effect for the login
     useEffect(() => {
 
         // fetch user from DB
@@ -80,7 +76,6 @@ function RoutingComponent() {
             //is the user already in our db if yes, connect if not go in the register page
             if (dbUser !== null) {
                 //is the user ban ? if yes, don't let him to connect
-                console.log(dbUser);
                 if(dbUser.isBanned){
                     alert("You are ban");
                     logout({returnTo: window.location.origin});
@@ -97,11 +92,13 @@ function RoutingComponent() {
         }
     }, [user]);
 
+    //The initial values for formik
     const initialValues = {
         firstname: "",
         lastname: ""
     };
 
+    //The yup validation schema
     const validationSchema = Yup.object({
         firstname: Yup.string().required("Required"),
         lastname: Yup.string().required("Required")
@@ -135,10 +132,6 @@ function RoutingComponent() {
         toogleNavbar();
     }
 
-    const toogleChangeDisplay = () => {
-        setDisplay(d => !d);
-    }
-
     return (
         <UserContext.Provider value={{user : userDB}}>
             {/*render the navbar*/}
@@ -149,7 +142,7 @@ function RoutingComponent() {
                    exact
                    render={() =>
                        <>
-                           <MyMap toogleChangeDisplay={toogleChangeDisplay} ePoi = {[]} />
+                           <MyMap ePoi = {[]} />
                        </>
                    }
             />
@@ -198,7 +191,7 @@ function RoutingComponent() {
                             <>
                            {pois != null && pois && pois.length > 0 &&
                            <>
-                               <InfosEstablishment display={display} ePoi={pois} setModif={setModif}/>
+                               <InfosEstablishment display={true} ePoi={pois} setModif={setModif}/>
                            </>
                            }
                            </>
@@ -213,7 +206,7 @@ function RoutingComponent() {
                        <>
                            {pois != null && pois && pois.length > 0 &&
                            <>
-                               <MyMap toogleChangeDisplay={toogleChangeDisplay} ePoi={pois} />
+                               <MyMap ePoi={pois} />
                            </>
                            }
                        </>
