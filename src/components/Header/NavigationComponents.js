@@ -106,6 +106,14 @@ function NavBars() {
                         :
                         <a className="App-link" href="#" onClick={onclickModifications}>Modifications List</a>
                 ) : null}
+
+                {/*If we are in a form create or modify, we want to go back to the home*/}
+                {location.pathname === "/addPOI" || location.pathname === "/modify" ?
+                    <a className="App-link" href="#" onClick={() => history.push("/")}>Return to map</a>
+                    :
+                    null
+                }
+
             </div>
 
             {/*the content of the toolbox*/}

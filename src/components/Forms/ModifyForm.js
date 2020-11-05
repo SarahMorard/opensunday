@@ -10,6 +10,9 @@ import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import {usePosition} from "use-position";
 import {Map, TileLayer} from "react-leaflet";
+import Request from "../../utils/request";
+import endpoints from "../../endpoints.json";
+import {useAuth0} from "@auth0/auth0-react";
 
 //this function will add or remove the given date from the list of date
 function dayReducer(state, action) {
@@ -49,6 +52,12 @@ function ModifyForm(props) {
         latitude,
         longitude
     } = usePosition(watch);
+
+    //get Auth0 infos
+    let {
+        loginWithRedirect,
+        getAccessTokenSilently,
+    } = useAuth0();
 
     //the list of options available for the user to choose the type of establishment
     const TypesOptions = [
@@ -129,9 +138,36 @@ function ModifyForm(props) {
     }
 
     //The effect of the modify button
-    const submitMethod = (value) => {
-        console.log(value);
-        //modify an establishment
+    const submitMethod = async (value) => {
+
+        //creation of the data
+        const data = {
+            name: value.name,
+            description: value.description,
+            address: value.address,
+            website: value.website,
+            lat: lat,
+            lng: long,
+            isSponsorized: false,
+            city: {
+                postalCode: value.npa,
+                name: value.city
+            },
+            type: {
+                id: value.type
+            },
+            establishmentDates: []
+        }
+        console.log(data);
+
+        //sent the POST request
+        /*await Request(
+            `${process.env.REACT_APP_SERVER_URL}${endpoints.establishments}`,
+            getAccessTokenSilently,
+            loginWithRedirect,
+            "POST",
+            data
+        );*/
     }
 
     //set the value when the user click on the map

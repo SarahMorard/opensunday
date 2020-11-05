@@ -31,6 +31,7 @@ function Modifications () {
 
             //put the list in the state
             await setModif(listOfModifications);
+            console.log(listOfModifications);
         }
         fetchModificationsFromDb();
     }, []);
@@ -59,21 +60,22 @@ function Modifications () {
         <ul className="myModifs">
             {modifs===null ? null : modifs.map((item, index) =>
                 <li key={item.modifID} className="list" style={{backgroundColor: item.validated >= 3 ? "rgba(0, 255, 0, 0.2)" : item.validated < 1 ? "rgba(255, 0, 0, 0.2)" : "white"}}>
-                    <span><span className="bold">idUser : </span>idUser : {item.idUser}</span>
+                    <span><span className="bold">idUser : </span>{item.user}</span>
                     <span>,<span className="bold"> date : </span>{item.date}</span>
-                    <span>,<span className="bold"> idEstablishment : </span>{item.idEstablishment}</span>
+                    <span>,<span className="bold"> idEstablishment : </span>{item.establishment}</span>
                     {item.name ? <span>,<span className="bold"> name : </span>{item.name}</span> : null}
-                    {item.idType ? <span>,<span className="bold"> idType : </span>{item.idType}</span> : null}
+                    {item.type ? <span>,<span className="bold"> idType : </span>{item.type}</span> : null}
                     {item.description ? <span>,<span className="bold"> description : </span>{item.description}</span> : null}
                     {item.address ? <span>,<span className="bold"> address : </span>{item.address}</span> : null }
-                    {item.idTown ? <span>,<span className="bold"> idTown : </span>{item.idTown}</span> : null}
+                    {item.city ? <span>,<span className="bold"> idTown : </span>{item.city}</span> : null}
                     {item.closed ? <span>,<span className="bold"> closed : </span>{item.closed.map((day, index) =>
                         <span>{day} </span>
                     )}</span> : null}
                     {item.lat ? <span>,<span className="bold"> lat : </span>{item.lat}</span> : null}
-                    {item.long ? <span>,<span className="bold"> long : </span>{item.long}</span> : null}
+                    {item.lng ? <span>,<span className="bold"> long : </span>{item.lng}</span> : null}
                     {item.website ? <span>,<span className="bold"> website : </span>{item.website}</span> : null}
-                    <span>,<span className="bold"> validated : </span>{item.validated}</span>
+                    {item.deleted===true ? <span>,<span className="bold"> Want to delete the establishment</span></span> : null}
+                    <span>,<span className="bold"> validated : </span>{item.validationStatus}</span>
                     {/*The button for ban a user*/}
                     <button onClick={() => banUser(item.idUser)} className="banButton">Ban user {item.idUser}</button>
                 </li>
