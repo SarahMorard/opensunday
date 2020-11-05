@@ -141,24 +141,28 @@ function ModifyForm(props) {
     const submitMethod = async (value) => {
 
         //creation of the data
-        const data = {
-            name: value.name,
-            description: value.description,
-            address: value.address,
-            website: value.website,
-            lat: lat,
-            lng: long,
-            isSponsorized: false,
+        const dataToInsert = {
+            name: value.name !== data.name ? value.name : null,
+            description: value.description !== data.description ? value.description : null,
+            address: value.address !== data.address ? value.address : null,
+            website: value.website !== data.website ? value.address : null,
+            lat: lat !== data.lat ? lat : null,
+            lng: long !== data.lng ? long : null,
+            deleted: false,
+            establishment: {
+              establishmentId: value.establishment
+            },
             city: {
-                postalCode: value.npa,
-                name: value.city
+                postalCode: value.npa !== data.idCity ? value.npa : null,
+                name: value.city !== data.city ? value.npa : null
             },
             type: {
-                id: value.type
+                id: value.type !== data.idType ? value.type() : null
             },
             establishmentDates: []
         }
         console.log(data);
+        console.log(dataToInsert);
 
         //sent the POST request
         /*await Request(

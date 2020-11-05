@@ -228,6 +228,7 @@ function RoutingComponent() {
             <Route path="/modify"
                    render = {() =>
                     <>
+                        {console.log(modifPOI)}
                         {modifPOI===null ? null : <ModifyForm data={modifPOI}/>}
                     </>
                    }

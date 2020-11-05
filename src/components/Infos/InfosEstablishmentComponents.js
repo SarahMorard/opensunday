@@ -194,6 +194,7 @@ const handleCopy = () => {
 }
 
 const modifyEstablishment = () => {
+
     history.push("/modify");
 }
 
