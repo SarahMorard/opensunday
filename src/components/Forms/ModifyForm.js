@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from "react";
+import React, {useContext, useReducer, useState} from "react";
 import {Formik, Form} from "formik";
 import * as Yup from "yup";
 import FormikControl from "../FormTemplate/FormikControl";
@@ -13,6 +13,7 @@ import {Map, TileLayer} from "react-leaflet";
 import Request from "../../utils/request";
 import endpoints from "../../endpoints.json";
 import {useAuth0} from "@auth0/auth0-react";
+import {UserContext} from "../../Context/UserContext";
 
 //this function will add or remove the given date from the list of date
 function dayReducer(state, action) {
@@ -36,13 +37,15 @@ function ModifyForm(props) {
     const data = props.data;
     console.log(data);
 
-    //this reducer is a state for manage lists.
-    const [selectedDay, setDays] = useReducer(dayReducer, data.closed);
+    //this reducer is a state for manage lists. It will be empty because of type missmatch for dates between the frontend and the backend
+    const [selectedDay, setDays] = useReducer(dayReducer, data.establishmentDates);
 
     //states for get back the latitude and the longitude
     const [lat, setLat] = useState(data.lat);
     const [long, setLong] = useState(data.lng);
 
+    //states for display the "please modify something" text
+    const [modifDone, setModifDone] = useState(false);
 
     // Const to keep track of the position of the user
     const watch = true;
@@ -52,6 +55,9 @@ function ModifyForm(props) {
         latitude,
         longitude
     } = usePosition(watch);
+
+    //the context
+    let context = useContext(UserContext);
 
     //get Auth0 infos
     let {
@@ -95,11 +101,11 @@ function ModifyForm(props) {
     //the initial values for formik
     const initialValues = {
         name: data.name,
-        type: data.idType,
+        type: data.type.id,
         description: data.description,
         address: data.address,
-        npa: data.idCity,
-        city: data.city,
+        npa: data.city.postalCode,
+        city: data.city.name,
         website: data.webSite,
     };
 
@@ -111,9 +117,7 @@ function ModifyForm(props) {
         address: Yup.string().required("Required"),
         npa: Yup.string().required("Required"),
         city: Yup.string().required("Required"),
-        website: Yup.string().required("Required"),
-        lat: Yup.number().required("required"),
-        long: Yup.number().required("Required")
+        website: Yup.string().required("Required")
     });
 
     //the managment of the calendar
@@ -145,33 +149,67 @@ function ModifyForm(props) {
             name: value.name !== data.name ? value.name : null,
             description: value.description !== data.description ? value.description : null,
             address: value.address !== data.address ? value.address : null,
-            website: value.website !== data.website ? value.address : null,
-            lat: lat !== data.lat ? lat : null,
-            lng: long !== data.lng ? long : null,
+            webSite: value.website !== data.webSite ? value.website : null,
+            lat: lat,
+            lng: long,
             deleted: false,
             establishment: {
-              establishmentId: value.establishment
+              establishmentId: data.establishmentId
             },
             city: {
-                postalCode: value.npa !== data.idCity ? value.npa : null,
-                name: value.city !== data.city ? value.npa : null
+                postalCode: value.npa,
+                name: value.city
             },
             type: {
-                id: value.type !== data.idType ? value.type() : null
+                id: value.type
             },
-            establishmentDates: []
+            user: {
+              GithubId: context.user.githubId
+            },
+            //date format don't match from frontend to backend (frontend is strings and backend are VisualStudio dates objects)
+            modificationDates: []
         }
-        console.log(data);
-        console.log(dataToInsert);
+
+        console.log(JSON.stringify(dataToInsert));
+
+        //check if something change in the modification
+        let isChanges = false;
+        if(dataToInsert.name !== null)
+            isChanges = true;
+        if(dataToInsert.description !== null)
+            isChanges = true;
+        if(dataToInsert.address !== null)
+            isChanges = true;
+        if(dataToInsert.webSite !== null)
+            isChanges = true;
+        if(dataToInsert.lat !== null)
+            isChanges = true;
+        if(dataToInsert.lng !== null)
+            isChanges = true;
+        if(dataToInsert.city.postalCode !== null)
+            isChanges = true;
+        if(dataToInsert.city.name !== null)
+            isChanges = true;
+        if(dataToInsert.type.id !== null)
+            isChanges = true;
+
+        console.log(isChanges);
 
         //sent the POST request
-        /*await Request(
-            `${process.env.REACT_APP_SERVER_URL}${endpoints.establishments}`,
-            getAccessTokenSilently,
-            loginWithRedirect,
-            "POST",
-            data
-        );*/
+        if(isChanges){
+            setModifDone(false);
+            await Request(
+                `${process.env.REACT_APP_SERVER_URL}${endpoints.modifications}`,
+                getAccessTokenSilently,
+                loginWithRedirect,
+                "POST",
+                dataToInsert
+            );
+            console.log(`${process.env.REACT_APP_SERVER_URL}${endpoints.modifications}`);
+        } else {
+            setModifDone(true);
+        }
+
     }
 
     //set the value when the user click on the map
@@ -223,7 +261,9 @@ function ModifyForm(props) {
                         <p>Your latitude: {lat}</p>
                         <p>Your longitude: {long}</p>
 
+                        {modifDone ? <p style={{color: "red", fontSize: 16}}>Please, change something before validate</p> : null}
                         <button type="submit">Modify</button>
+
                     </Form>
                 )
             }

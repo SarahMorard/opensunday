@@ -59,25 +59,26 @@ function Modifications () {
     return (
         <ul className="myModifs">
             {modifs===null ? null : modifs.map((item, index) =>
-                <li key={item.modifID} className="list" style={{backgroundColor: item.validated >= 3 ? "rgba(0, 255, 0, 0.2)" : item.validated < 1 ? "rgba(255, 0, 0, 0.2)" : "white"}}>
-                    <span><span className="bold">idUser : </span>{item.user}</span>
-                    <span>,<span className="bold"> date : </span>{item.date}</span>
-                    <span>,<span className="bold"> idEstablishment : </span>{item.establishment}</span>
+                <li key={item.id} className="list" style={{backgroundColor: item.validated >= 3 ? "rgba(0,255,0,0.2)" : item.validated < 1 ? "rgba(255,0,0,0.2)" : "white"}}>
+                    <span><span className="bold">idUser : </span>{item.user.githubId}</span>
+                    <span>,<span className="bold"> date : </span>{item.date.yearMonthDate}</span>
+                    <span>,<span className="bold"> idEstablishment : </span>{item.establishment.establishmentId}</span>
                     {item.name ? <span>,<span className="bold"> name : </span>{item.name}</span> : null}
-                    {item.type ? <span>,<span className="bold"> idType : </span>{item.type}</span> : null}
+                    {item.type.id ? <span>,<span className="bold"> idType : </span>{item.type.id}</span> : null}
                     {item.description ? <span>,<span className="bold"> description : </span>{item.description}</span> : null}
                     {item.address ? <span>,<span className="bold"> address : </span>{item.address}</span> : null }
-                    {item.city ? <span>,<span className="bold"> idTown : </span>{item.city}</span> : null}
+                    {item.city.postalCode ? <span>,<span className="bold"> NPA : </span>{item.city.postalCode}</span> : null}
+                    {item.city.name ? <span>,<span className="bold"> City : </span>{item.city.name}</span> : null}
                     {item.closed ? <span>,<span className="bold"> closed : </span>{item.closed.map((day, index) =>
                         <span>{day} </span>
                     )}</span> : null}
                     {item.lat ? <span>,<span className="bold"> lat : </span>{item.lat}</span> : null}
                     {item.lng ? <span>,<span className="bold"> long : </span>{item.lng}</span> : null}
-                    {item.website ? <span>,<span className="bold"> website : </span>{item.website}</span> : null}
+                    {item.webSite ? <span>,<span className="bold"> website : </span>{item.webSite}</span> : null}
                     {item.deleted===true ? <span>,<span className="bold"> Want to delete the establishment</span></span> : null}
                     <span>,<span className="bold"> validated : </span>{item.validationStatus}</span>
                     {/*The button for ban a user*/}
-                    <button onClick={() => banUser(item.idUser)} className="banButton">Ban user {item.idUser}</button>
+                    <button onClick={() => banUser(item.user.githubId)} className="banButton">Ban user {item.user.githubId}</button>
                 </li>
             )}
         </ul>

@@ -148,6 +148,7 @@ function CreationForm() {
             type: {
                 id: value.type
             },
+            //date format don't match from frontend to backend (frontend is strings and backend are VisualStudio dates objects)
             establishmentDates: []
         }
 

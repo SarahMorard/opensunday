@@ -201,7 +201,7 @@ function RoutingComponent() {
                             <>
                            {pois != null && pois && pois.length > 0 &&
                            <>
-                               <InfosEstablishment display={display} ePoi={pois}/>
+                               <InfosEstablishment display={display} ePoi={pois} setModif={setModif}/>
                            </>
                            }
                            </>

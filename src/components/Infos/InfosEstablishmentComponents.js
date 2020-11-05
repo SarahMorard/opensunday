@@ -194,7 +194,7 @@ const handleCopy = () => {
 }
 
 const modifyEstablishment = () => {
-
+    props.setModif(poi);
     history.push("/modify");
 }
 
