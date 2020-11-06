@@ -57,7 +57,7 @@ function Modifications () {
     //return all the modifications made by the users, if it's null (the user didn't modify the attribute) we don't render it
     return (
         <ul className="myModifs">
-            {modifs===null ? null : modifs.map((item, index) =>
+            {modifs===null ? null : modifs.map((item) =>
                 <li key={item.id} className="list" style={{backgroundColor: item.validated >= 3 ? "rgba(0,255,0,0.2)" : item.validated < 1 ? "rgba(255,0,0,0.2)" : "white"}}>
                     <span><span className="bold">idUser : </span>{item.user.githubId}</span>
                     <span>,<span className="bold"> date : </span>{item.date.yearMonthDate}</span>
@@ -70,7 +70,7 @@ function Modifications () {
                     {item.address ? <span>,<span className="bold"> address : </span>{item.address}</span> : null }
                     {item.city.postalCode ? <span>,<span className="bold"> NPA : </span>{item.city.postalCode}</span> : null}
                     {item.city.name ? <span>,<span className="bold"> City : </span>{item.city.name}</span> : null}
-                    {item.closed ? <span>,<span className="bold"> closed : </span>{item.closed.map((day, index) =>
+                    {item.closed ? <span>,<span className="bold"> closed : </span>{item.closed.map((day) =>
                         <span>{day} </span>
                     )}</span> : null}
                     {item.lat ? <span>,<span className="bold"> lat : </span>{item.lat}</span> : null}
